@@ -1,0 +1,12 @@
+# Build output
+dist/
+
+# Environment variables
+.env
+.env.test
+
+# Logs
+*.log
+
+# Uploads (if storing locally)
+uploads/
