@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import mongoose, { Document, Schema, type InferSchemaType } from "mongoose";
+import mongoose, { Schema, Types, type InferSchemaType } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -38,7 +38,9 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-export type IUser = InferSchemaType<typeof userSchema>;
+export type IUser = InferSchemaType<typeof userSchema> & {
+  _id: Types.ObjectId;
+};
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
