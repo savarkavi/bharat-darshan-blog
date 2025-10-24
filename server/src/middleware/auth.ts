@@ -27,7 +27,7 @@ export const protect = async (
       process.env.JWT_SECRET as string
     ) as JwtPayload;
 
-    const user = await User.findById(decodedToken).select("-password");
+    const user = await User.findById(decodedToken.userId).select("-password");
 
     if (!user) {
       return res.status(401).json({ message: "User not found" });
