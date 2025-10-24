@@ -6,11 +6,16 @@ import {
   getBlogBySlug,
   updateBlog,
 } from "../controllers/blogController.ts";
+import { protect } from "../middleware/auth.ts";
 
 const router = express.Router();
 
-router.route("/").get(getAllBlogs).post(createBlog);
+router.route("/").get(getAllBlogs).post(protect, createBlog);
 
-router.route("/:slug").get(getBlogBySlug).put(updateBlog).delete(deleteBlog);
+router
+  .route("/:slug")
+  .get(getBlogBySlug)
+  .put(protect, updateBlog)
+  .delete(protect, deleteBlog);
 
 export default router;
