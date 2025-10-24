@@ -20,6 +20,18 @@ export const getAllBlogs = async (req: Request, res: Response) => {
 
 export const getBlogBySlug = async (req: Request, res: Response) => {
   try {
+    const slug = req.params.slug;
+
+    const blog = await Blog.findOne({ slug }).populate(
+      "author",
+      "fullname username avatar"
+    );
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res.json(blog);
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -33,7 +45,7 @@ export const createBlog = async (req: Request, res: Response) => {
     const { title, excerpt, content, coverImage, tags, category } = req.body;
     const slug = generateSlug(title);
 
-    const newBlog = Blog.create({
+    const newBlog = await Blog.create({
       title,
       slug,
       excerpt,
@@ -55,6 +67,36 @@ export const createBlog = async (req: Request, res: Response) => {
 
 export const updateBlog = async (req: Request, res: Response) => {
   try {
+    const slug = req.params.slug;
+
+    const blog = await Blog.findOne({ slug });
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    if (blog.author.toString() !== req.user?._id.toString()) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    const { title, content, excerpt, tags, category, coverImage, status } =
+      req.body;
+
+    blog.title = title || blog.title;
+    blog.content = content || blog.content;
+    blog.excerpt = excerpt || blog.excerpt;
+    blog.tags = tags || blog.tags;
+    blog.category = category || blog.category;
+    blog.coverImage = coverImage || blog.coverImage;
+    blog.status = status || blog.status;
+
+    if (title && title !== blog.title) {
+      blog.slug = generateSlug(title);
+    }
+
+    const updatedBlog = await blog.save();
+
+    res.json(updatedBlog);
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -65,6 +107,21 @@ export const updateBlog = async (req: Request, res: Response) => {
 
 export const deleteBlog = async (req: Request, res: Response) => {
   try {
+    const slug = req.params.slug;
+
+    const blog = await Blog.findOne({ slug });
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    if (blog.author.toString() !== req.user?._id.toString()) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    await blog.deleteOne();
+
+    res.status(204).json({ message: "Blog successfully deleted" });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
