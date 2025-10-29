@@ -3,7 +3,7 @@ import { CiBookmark } from "react-icons/ci";
 
 const EssayCard = () => {
   return (
-    <div className="w-[350px] rounded-sm">
+    <div className="mx-auto w-full max-w-[350px]">
       <div className="w-[350px]">
         <img
           src={essayImage}

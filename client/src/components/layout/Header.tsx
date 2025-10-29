@@ -21,10 +21,10 @@ const Header = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 z-99 flex w-full items-center justify-between px-3 py-2 transition-all ${scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent"}`}
+      className={`fixed top-0 left-0 z-99 flex w-full items-center justify-between px-4 py-2 transition-all ${scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent"}`}
     >
       <img src={logo} alt="logo" className="h-12 w-12" />
-      <div className="flex items-center gap-10 text-lg font-semibold">
+      <div className="hidden items-center gap-10 text-lg font-semibold xl:flex">
         <a href="/">Philosophy</a>
         <a href="/">Science</a>
         <a href="/">Culture</a>
