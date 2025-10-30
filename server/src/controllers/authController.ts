@@ -40,11 +40,13 @@ export const signUp = async (req: Request, res: Response) => {
     const { hashedToken, rawToken } = generateVerificationToken();
 
     user.verificationToken = hashedToken;
-    user.verificationTokenExpires = new Date(Date.now() * 24 * 60 * 60 * 1000);
+    user.verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    await user.save({ validateBeforeSave: false });
 
     const verifyUrl = `${
       process.env.SERVER_URL
-    }/auth/verify-email?token=${rawToken}&id=${user._id.toString()}`;
+    }/api/auth/verify-email?token=${rawToken}&id=${user._id.toString()}`;
 
     const html = `
       <p>Hi ${user.fullname},</p>
@@ -53,7 +55,9 @@ export const signUp = async (req: Request, res: Response) => {
       <p>If you didn't request this, ignore this email.</p>
     `;
 
-    await sendEmail(user.email, "Email verification", html);
+    const info = await sendEmail(user.email, "Email verification", html);
+
+    console.log(info);
 
     res.status(201).json({
       userId: user._id.toString(),
@@ -164,6 +168,8 @@ export const resendVerification = async (req: Request, res: Response) => {
 
     user.verificationToken = hashedToken;
     user.verificationTokenExpires = new Date(Date.now() * 24 * 60 * 60 * 1000);
+
+    await user.save({ validateBeforeSave: false });
 
     const verifyUrl = `${
       process.env.SERVER_URL
