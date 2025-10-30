@@ -10,12 +10,19 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async (to: string, subject: string, html: string) => {
-  const info = await transporter.sendMail({
-    from: process.env.FROM_EMAIL,
-    to,
-    subject,
-    html,
-  });
+  try {
+    const info = await transporter.sendMail({
+      from: process.env.FROM_EMAIL,
+      to,
+      subject,
+      html,
+    });
 
-  return info;
+    return info;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
+    console.log("Something went wrong");
+  }
 };
