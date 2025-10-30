@@ -34,6 +34,9 @@ const userSchema = new Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    verificationToken: { type: String },
+    verificationTokenExpires: { type: Date },
+    isVerified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
