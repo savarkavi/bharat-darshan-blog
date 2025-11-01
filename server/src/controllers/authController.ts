@@ -206,3 +206,18 @@ export const resendVerification = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const getAuthUser = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    res.json(user);
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
