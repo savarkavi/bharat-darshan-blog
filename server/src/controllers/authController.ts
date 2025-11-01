@@ -55,9 +55,16 @@ export const signUp = async (req: Request, res: Response) => {
       <p>If you didn't request this, ignore this email.</p>
     `;
 
-    const info = await sendEmail(user.email, "Email verification", html);
+    await sendEmail(user.email, "Email verification", html);
 
-    console.log(info);
+    const token = generateJWTToken(user._id.toString());
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
 
     res.status(201).json({
       userId: user._id.toString(),
@@ -65,7 +72,6 @@ export const signUp = async (req: Request, res: Response) => {
       username: user.username,
       email: user.email,
       role: user.role,
-      token: generateJWTToken(user._id.toString()),
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -95,13 +101,21 @@ export const signIn = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Wrong password" });
     }
 
+    const token = generateJWTToken(user._id.toString());
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
     res.json({
       userId: user._id.toString(),
       fullname: user.fullname,
       username: user.username,
       email: user.email,
       role: user.role,
-      token: generateJWTToken(user._id.toString()),
     });
   } catch (error) {
     if (error instanceof Error) {
