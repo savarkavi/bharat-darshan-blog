@@ -213,7 +213,13 @@ export const getAuthUser = async (req: Request, res: Response) => {
 
     if (!user) return res.status(400).json({ message: "User not found" });
 
-    res.json(user);
+    res.json({
+      userId: user._id.toString(),
+      fullname: user.fullname,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
