@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import Button from "../common/Button";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -30,9 +31,9 @@ const Header = () => {
         <a href="/">Culture</a>
         <a href="/">History</a>
       </div>
-      <div>
+      <Link to={"/sign-in"}>
         <Button>Log In</Button>
-      </div>
+      </Link>
     </div>
   );
 };
