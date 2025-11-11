@@ -98,7 +98,9 @@ export const signIn = async (req: Request, res: Response) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Wrong password" });
+      return res
+        .status(400)
+        .json({ message: "Wrong password. Try a different one." });
     }
 
     const token = generateJWTToken(user._id.toString());
