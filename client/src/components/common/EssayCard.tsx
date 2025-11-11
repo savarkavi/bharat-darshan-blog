@@ -3,8 +3,8 @@ import { CiBookmark } from "react-icons/ci";
 
 const EssayCard = () => {
   return (
-    <div className="mx-auto w-full max-w-[350px]">
-      <div className="w-[350px]">
+    <div className="mx-auto w-full max-w-[400px]">
+      <div className="w-[400px]">
         <img
           src={essayImage}
           alt="essay cover image"
