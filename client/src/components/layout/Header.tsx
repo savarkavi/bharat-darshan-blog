@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import Button from "../common/Button";
 import { Link } from "react-router-dom";
+import { useAuthUser, useSignOut } from "../../api/auth/queries";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const { isAuthenticated } = useAuthUser();
+  const { mutate: signOut } = useSignOut();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,9 +34,13 @@ const Header = () => {
         <a href="/">Culture</a>
         <a href="/">History</a>
       </div>
-      <Link to={"/sign-in"}>
-        <Button>Log In</Button>
-      </Link>
+      {isAuthenticated ? (
+        <Button onClick={() => signOut()}>Log out</Button>
+      ) : (
+        <Link to={"/sign-in"}>
+          <Button>Log In</Button>
+        </Link>
+      )}
     </div>
   );
 };

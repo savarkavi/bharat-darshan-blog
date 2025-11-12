@@ -1,14 +1,15 @@
-import type { ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   className?: string;
 }
 
-const Button = ({ children, className }: ButtonProps) => {
+const Button = ({ children, className, ...props }: ButtonProps) => {
   return (
     <button
       className={`bg-saffron flex cursor-pointer items-center justify-center rounded-sm px-5 py-1 text-white hover:opacity-80 ${className}`}
+      {...props}
     >
       {children}
     </button>

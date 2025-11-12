@@ -36,6 +36,24 @@ export const useSignIn = () => {
   });
 };
 
+export const useSignOut = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: authService.signOut,
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ["auth", "user"] });
+      navigate("/");
+      toast.success("Successfully logged out");
+    },
+    onError: (error: AxiosError<ApiError>) => {
+      console.log(error.response?.data.message);
+      toast.error(error.response?.data.message);
+    },
+  });
+};
+
 export const useSignUp = () => {
   const queryClient = useQueryClient();
 
