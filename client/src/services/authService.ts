@@ -1,3 +1,4 @@
+import axios from "axios";
 import api from "./api";
 
 export const authService = {
@@ -16,8 +17,19 @@ export const authService = {
     return res.data;
   },
 
+  signOut: async () => {
+    await api.post("/auth/sign-out");
+  },
+
   fetchAuthUser: async () => {
-    const res = await api.get("/auth/me");
-    return res.data;
+    try {
+      const res = await api.get("/auth/me");
+      return res.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.status === 401) {
+        return null;
+      }
+      throw error;
+    }
   },
 };
