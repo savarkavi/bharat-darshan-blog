@@ -127,6 +127,23 @@ export const signIn = async (req: Request, res: Response) => {
   }
 };
 
+export const signOut = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return res.status(200).json({ message: "Signed out successfully" });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 export const verifyEmail = async (req: Request, res: Response) => {
   try {
     const { token, id } = req.query as { token?: string; id: string };
