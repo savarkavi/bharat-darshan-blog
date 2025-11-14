@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
 import SignIn from "./pages/SignIn";
 import { ToastContainer } from "react-toastify";
 import { useAuthUser } from "./api/auth/queries";
 import { ImSpinner2 } from "react-icons/im";
 import SignUp from "./pages/SignUp";
+import EssayEditor from "./pages/EssayEditor";
+import MainLayout from "./layouts/MainLayout";
+import EditorLayout from "./layouts/EditorLayout";
 
 function App() {
   const { isLoading } = useAuthUser();
@@ -21,13 +22,17 @@ function App() {
 
   return (
     <div>
-      <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+        </Route>
+
+        <Route element={<EditorLayout />}>
+          <Route path="/editor" element={<EssayEditor />} />
+        </Route>
       </Routes>
-      <Footer />
       <ToastContainer />
     </div>
   );
