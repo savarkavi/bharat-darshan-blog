@@ -9,14 +9,14 @@ const Footer = () => {
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <img src={logo} alt="logo" className="h-12 w-12" />
-              <p className="text-copper-brown text-4xl">Bharata Darshana</p>
+              <p className="text-camel-tan text-4xl">Bharata Darshana</p>
             </div>
             <p className="text-ash-grey ml-1 max-w-[400px]">
               Preserving and sharing the timeless wisdom of Bharat through
               thoughtful exploration and scholarly discourse.
             </p>
           </div>
-          <div className="text-camel-tan flex gap-20 lg:text-xl">
+          <div className="flex gap-26 text-white lg:text-xl">
             <div className="flex flex-col gap-3">
               <p>Essays</p>
               <p>Videos</p>

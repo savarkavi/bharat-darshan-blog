@@ -3,7 +3,7 @@ import Button from "./common/Button";
 const FooterNewsletter = () => {
   return (
     <div className="text-ash-grey flex flex-col gap-2">
-      <p className="text-copper-brown text-2xl font-semibold">
+      <p className="text-camel-tan text-2xl font-semibold">
         Sign up to our Newsletter
       </p>
       <p>Updates on everything new at Bharata Darshana.</p>
