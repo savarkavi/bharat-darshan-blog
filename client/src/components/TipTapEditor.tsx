@@ -1,8 +1,12 @@
 import "../editorStyles.css";
 import { useEditor, EditorContent } from "@tiptap/react";
-import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import { useEditorStore } from "../store/use-editor";
+import TextAlign from "@tiptap/extension-text-align";
+import { BulletList, OrderedList, ListItem } from "@tiptap/extension-list";
+import Blockquote from "@tiptap/extension-blockquote";
+import Highlight from "@tiptap/extension-highlight";
+import { TextStyleKit } from "@tiptap/extension-text-style";
 
 const TiptapEditor = () => {
   const setEditor = useEditorStore((state) => state.setEditor);
@@ -16,7 +20,19 @@ const TiptapEditor = () => {
     onFocus: ({ editor }) => setEditor(editor),
     onBlur: ({ editor }) => setEditor(editor),
     onContentError: ({ editor }) => setEditor(editor),
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      BulletList,
+      OrderedList,
+      ListItem,
+      Blockquote,
+      TextStyleKit,
+      Highlight.configure({ multicolor: true }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
+    ],
+
     editorProps: {
       attributes: {
         class: "focus:outline-none",
@@ -26,9 +42,8 @@ const TiptapEditor = () => {
   });
 
   return (
-    <div className="h-screen w-full max-w-[800px] bg-white">
+    <div className="min-h-screen w-full max-w-[800px] bg-white">
       <EditorContent editor={editor} />
-      <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
     </div>
   );
 };
