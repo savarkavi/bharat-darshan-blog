@@ -1,0 +1,26 @@
+import type { IconType } from "react-icons/lib";
+
+interface ToolbarButtonProps {
+  icon: IconType;
+  iconSize?: string;
+  isActive?: boolean;
+  onClick: () => void;
+}
+
+const ToolbarButton = ({
+  icon: Icon,
+  iconSize,
+  isActive,
+  onClick,
+}: ToolbarButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`hover:bg-light-parchment cursor-pointer rounded-md p-1 ${isActive && "bg-light-parchment"} `}
+    >
+      <Icon className={iconSize ? iconSize : "size-5"} />
+    </button>
+  );
+};
+
+export default ToolbarButton;
