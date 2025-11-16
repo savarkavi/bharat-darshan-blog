@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import { ToastContainer } from "react-toastify";
@@ -8,6 +8,7 @@ import SignUp from "./pages/SignUp";
 import EssayEditor from "./pages/EssayEditor";
 import MainLayout from "./layouts/MainLayout";
 import EditorLayout from "./layouts/EditorLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const { isLoading } = useAuthUser();
@@ -29,8 +30,16 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
         </Route>
 
-        <Route element={<EditorLayout />}>
-          <Route path="/editor" element={<EssayEditor />} />
+        <Route
+          element={
+            <ProtectedRoute>
+              <Outlet />
+            </ProtectedRoute>
+          }
+        >
+          <Route element={<EditorLayout />}>
+            <Route path="/editor" element={<EssayEditor />} />
+          </Route>
         </Route>
       </Routes>
       <ToastContainer />
