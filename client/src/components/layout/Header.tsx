@@ -27,7 +27,9 @@ const Header = () => {
     <div
       className={`fixed top-0 left-0 z-99 flex w-full items-center justify-between px-4 py-2 transition-all ${scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent"}`}
     >
-      <img src={logo} alt="logo" className="h-12 w-12" />
+      <Link to={"/"}>
+        <img src={logo} alt="logo" className="h-12 w-12" />
+      </Link>
       <div className="hidden items-center gap-10 text-lg font-semibold xl:flex">
         <a href="/">Philosophy</a>
         <a href="/">Science</a>
