@@ -75,6 +75,7 @@ const SignUpForm = () => {
           <input
             {...register("password", { required: true, minLength: 6 })}
             id="password"
+            type="password"
             className="rounded-lg border p-2 outline-none"
             placeholder="Enter your password"
           />
