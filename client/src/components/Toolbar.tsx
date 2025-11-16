@@ -13,27 +13,16 @@ import {
   CiTextAlignRight,
   CiTextAlignJustify,
 } from "react-icons/ci";
+import UndoRedoButton from "./toolbar/UndoRedoButton";
 
 const Toolbar = () => {
-  const { editor } = useEditorStore();
+  const editor = useEditorStore((state) => state.editor);
 
   const Separator = () => {
     return <div className="h-5 w-px bg-gray-500"></div>;
   };
 
   const sections = [
-    [
-      {
-        label: "undo",
-        icon: BiUndo,
-        onClick: () => editor?.commands.undo(),
-      },
-      {
-        label: "redo",
-        icon: BiRedo,
-        onClick: () => editor?.commands.redo(),
-      },
-    ],
     [
       {
         label: "bold",
@@ -98,11 +87,18 @@ const Toolbar = () => {
 
   return (
     <div className="bg-dark-parchment p-2">
-      <div className="mx-auto flex max-w-[800px] items-center gap-6">
+      <div className="mx-auto flex max-w-[800px] items-center justify-center gap-6">
         <div className="flex items-center gap-3">
-          {sections[0].map((item) => (
-            <ToolbarButton key={item.label} {...item} />
-          ))}
+          <UndoRedoButton
+            label="undo"
+            icon={BiUndo}
+            onClick={() => editor?.commands.undo()}
+          />
+          <UndoRedoButton
+            label="redo"
+            icon={BiRedo}
+            onClick={() => editor?.commands.redo()}
+          />
         </div>
         <Separator />
         <div className="flex items-center gap-3">
@@ -117,7 +113,7 @@ const Toolbar = () => {
         </div>
         <Separator />
         <div className="flex items-center gap-3">
-          {sections[1].map((item) => (
+          {sections[0].map((item) => (
             <ToolbarButton key={item.label} {...item} />
           ))}
         </div>
@@ -128,7 +124,7 @@ const Toolbar = () => {
         </div>
         <Separator />
         <div className="flex items-center gap-3">
-          {sections[2].map((item) => (
+          {sections[1].map((item) => (
             <ToolbarButton key={item.label} {...item} />
           ))}
         </div>
