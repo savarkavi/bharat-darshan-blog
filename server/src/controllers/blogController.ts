@@ -105,6 +105,56 @@ export const updateBlog = async (req: Request, res: Response) => {
   }
 };
 
+export const saveDraft = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    const { title, content, excerpt, tags, category, coverImage } = req.body;
+
+    let blog;
+
+    if (slug) {
+      blog = await Blog.findOne({ slug });
+
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+
+      blog.title = title || blog.title;
+      blog.content = content || blog.content;
+      blog.excerpt = excerpt || blog.excerpt;
+      blog.tags = tags || blog.tags;
+      blog.category = category || blog.category;
+      blog.coverImage = coverImage || blog.coverImage;
+
+      if (title && title !== blog.title) {
+        blog.slug = generateSlug(title);
+      }
+    } else {
+      console.log(req.user);
+
+      blog = new Blog({
+        title: title || "Untitled draft",
+        content,
+        excerpt,
+        tags,
+        category,
+        coverImage,
+        author: req.user?._id,
+        slug: generateSlug(title || "untitled draft"),
+      });
+    }
+
+    const savedDraft = await blog.save();
+
+    return res.status(200).json(savedDraft);
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 export const deleteBlog = async (req: Request, res: Response) => {
   try {
     const slug = req.params.slug;
