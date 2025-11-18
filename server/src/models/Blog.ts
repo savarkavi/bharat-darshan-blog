@@ -4,7 +4,7 @@ const blogSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   slug: { type: String, required: true, unique: true },
   excerpt: { type: String, required: true, trim: true, maxLength: 200 },
-  content: { type: String, required: true },
+  content: { type: Object, required: true },
   coverImage: { type: String, required: true },
   author: { type: Schema.Types.ObjectId, ref: "User", required: true },
   tags: [{ type: String, lowercase: true }],
