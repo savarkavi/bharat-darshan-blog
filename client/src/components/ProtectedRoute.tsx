@@ -1,5 +1,5 @@
 import type React from "react";
-import { useAuthUser } from "../api/auth/queries";
+import { useAuthUser } from "../api/auth/authApi";
 import { ImSpinner2 } from "react-icons/im";
 import { Navigate, useLocation } from "react-router-dom";
 

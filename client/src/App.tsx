@@ -2,7 +2,7 @@ import { Outlet, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import { ToastContainer } from "react-toastify";
-import { useAuthUser } from "./api/auth/queries";
+import { useAuthUser } from "./api/auth/authApi";
 import { ImSpinner2 } from "react-icons/im";
 import SignUp from "./pages/SignUp";
 import EssayEditor from "./pages/EssayEditor";

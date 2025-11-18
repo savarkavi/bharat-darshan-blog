@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "../common/Button";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useSignIn } from "../../api/auth/queries";
+import { useSignIn } from "../../api/auth/authApi";
 import { ImSpinner2 } from "react-icons/im";
 
 interface IFormInput {

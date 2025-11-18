@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import Button from "../common/Button";
 import { Link } from "react-router-dom";
-import { useAuthUser, useSignOut } from "../../api/auth/queries";
+import { useAuthUser, useSignOut } from "../../api/auth/authApi";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
