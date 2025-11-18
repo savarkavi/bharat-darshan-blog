@@ -16,7 +16,7 @@ import {
 import UndoRedoButton from "./toolbar/UndoRedoButton";
 
 const Toolbar = () => {
-  const editor = useEditorStore((state) => state.editor);
+  const { editor } = useEditorStore();
 
   const Separator = () => {
     return <div className="h-5 w-px bg-gray-500"></div>;
@@ -86,7 +86,7 @@ const Toolbar = () => {
   ];
 
   return (
-    <div className="bg-dark-parchment p-2">
+    <div className="bg-dark-parchment border-ash-grey border-y p-2">
       <div className="mx-auto flex max-w-[800px] items-center justify-center gap-6">
         <div className="flex items-center gap-3">
           <UndoRedoButton

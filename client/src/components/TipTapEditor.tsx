@@ -38,11 +38,10 @@ const TiptapEditor = () => {
         class: "focus:outline-none",
       },
     },
-    content: "<p>Hello World!</p>",
   });
 
   return (
-    <div className="min-h-screen w-full max-w-[800px] bg-white">
+    <div className="mx-auto h-screen w-full max-w-[800px] overflow-y-scroll bg-white">
       <EditorContent editor={editor} />
     </div>
   );
