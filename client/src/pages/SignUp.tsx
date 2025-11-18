@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useAuthUser } from "../api/auth/queries";
+import { useAuthUser } from "../api/auth/authApi";
 import SignUpForm from "../components/forms/SignUpForm";
 
 const SignUp = () => {

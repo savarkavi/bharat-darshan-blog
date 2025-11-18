@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import SignInForm from "../components/forms/SignInForm";
-import { useAuthUser } from "../api/auth/queries";
+import { useAuthUser } from "../api/auth/authApi";
 
 const SignIn = () => {
   const { isAuthenticated } = useAuthUser();
