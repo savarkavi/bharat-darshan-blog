@@ -1,9 +1,25 @@
+import { useParams } from "react-router-dom";
+import { useGetBlog } from "../api/blog/blogApi";
+import EssayForm from "../components/forms/EssayForm";
 import TiptapEditor from "../components/TipTapEditor";
+import { ImSpinner2 } from "react-icons/im";
 
 const EssayEditor = () => {
+  const { slug } = useParams();
+
+  const { data, isLoading } = useGetBlog(slug);
+
+  if (isLoading)
+    return (
+      <div className="bg-light-parchment relative flex min-h-screen items-center justify-center">
+        <ImSpinner2 className="animate-spin" />
+      </div>
+    );
+
   return (
-    <div className="bg-light-parchment flex min-h-screen flex-col items-center justify-center py-24">
-      <TiptapEditor />
+    <div className="bg-light-parchment relative flex min-h-screen">
+      <EssayForm data={data} />
+      <TiptapEditor data={data} />
     </div>
   );
 };

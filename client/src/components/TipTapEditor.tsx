@@ -7,8 +7,13 @@ import { BulletList, OrderedList, ListItem } from "@tiptap/extension-list";
 import Blockquote from "@tiptap/extension-blockquote";
 import Highlight from "@tiptap/extension-highlight";
 import { TextStyleKit } from "@tiptap/extension-text-style";
+import type { Blog } from "../types/types";
 
-const TiptapEditor = () => {
+interface TipTapEditorProps {
+  data: Blog | undefined;
+}
+
+const TiptapEditor = ({ data }: TipTapEditorProps) => {
   const setEditor = useEditorStore((state) => state.setEditor);
 
   const editor = useEditor({
@@ -38,6 +43,8 @@ const TiptapEditor = () => {
         class: "focus:outline-none",
       },
     },
+
+    content: data ? data.content : null,
   });
 
   return (
