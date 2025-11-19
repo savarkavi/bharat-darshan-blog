@@ -1,18 +1,25 @@
 import axios from "axios";
 import api from "./api";
 
+interface SignInDataType {
+  emailOrUsername: string;
+  password: string;
+}
+
+interface SignUpDataType {
+  fullname: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
 export const authService = {
-  signIn: async (data: { emailOrUsername: string; password: string }) => {
+  signIn: async (data: SignInDataType) => {
     const res = await api.post("/auth/sign-in", data);
     return res.data;
   },
 
-  signUp: async (data: {
-    fullname: string;
-    username: string;
-    email: string;
-    password: string;
-  }) => {
+  signUp: async (data: SignUpDataType) => {
     const res = await api.post("/auth/sign-up", data);
     return res.data;
   },
