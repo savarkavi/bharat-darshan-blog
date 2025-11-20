@@ -8,10 +8,18 @@ export interface IFormInput {
   essayTitle: string;
   excerpt: string;
   category: string;
+  tags: string[];
 }
 
 const EditorLayout = () => {
-  const methods = useForm<IFormInput>();
+  const methods = useForm<IFormInput>({
+    defaultValues: {
+      essayTitle: "",
+      excerpt: "",
+      category: "",
+      tags: [],
+    },
+  });
 
   return (
     <>

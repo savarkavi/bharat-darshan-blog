@@ -24,7 +24,7 @@ const EditorHeader = () => {
         category: data.category,
         content: editor?.getJSON(),
         coverImage: "adfsd",
-        tags: ["hi", "there"],
+        tags: data.tags,
       },
       slug,
     });
