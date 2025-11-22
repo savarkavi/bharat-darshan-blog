@@ -1,18 +1,28 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext, type FieldError } from "react-hook-form";
 import type { IFormInput } from "../../layouts/EditorLayout";
 import type { Blog } from "../../types/types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { RxCross2 } from "react-icons/rx";
+import FormValidationError from "../common/FormValidationError";
 
 interface EssayFormProps {
   data: Blog | undefined;
 }
 
 const EssayForm = ({ data }: EssayFormProps) => {
-  const { register, reset, setValue, watch } = useFormContext<IFormInput>();
+  const {
+    register,
+    reset,
+    setValue,
+    getValues,
+    watch,
+    formState: { errors },
+  } = useFormContext<IFormInput>();
   const [tagInput, setTagInput] = useState("");
 
   const tags = watch("tags");
+
+  const isPublishing = useCallback(() => getValues("isPublished"), [getValues]);
 
   useEffect(() => {
     if (data) {
@@ -27,9 +37,12 @@ const EssayForm = ({ data }: EssayFormProps) => {
 
   useEffect(() => {
     register("tags", {
-      validate: (value) => value.length >= 3 || "Please add at least 3 tags",
+      validate: (value) => {
+        if (!isPublishing()) return;
+        return value.length >= 3 || "Please add at least 3 tags to publish";
+      },
     });
-  }, [register]);
+  }, [register, isPublishing]);
 
   const handleTagAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && tagInput.trim()) {
@@ -44,6 +57,18 @@ const EssayForm = ({ data }: EssayFormProps) => {
   const handleTagRemove = (removeTag: string) => {
     const newTags = tags.filter((tag) => tag !== removeTag);
     setValue("tags", newTags);
+  };
+
+  const validateExcerpt = (value: string) => {
+    if (!isPublishing()) return true;
+    return (
+      (value && value.trim().length > 0) || "Excerpt is required to publish"
+    );
+  };
+
+  const validateCategory = (value: string) => {
+    if (!isPublishing()) return true;
+    return (value && value !== "default") || "Category is required to publish";
   };
 
   return (
@@ -65,6 +90,11 @@ const EssayForm = ({ data }: EssayFormProps) => {
             className="bg-light-parchment rounded-lg border p-2 outline-none"
             placeholder="Enter your essay title"
           />
+          <FormValidationError
+            field={errors.essayTitle}
+            errorType="required"
+            message="Title is required"
+          />
         </div>
         <div className="flex flex-col gap-2">
           <label
@@ -74,11 +104,16 @@ const EssayForm = ({ data }: EssayFormProps) => {
             Brief Excerpt
           </label>
           <textarea
-            {...register("excerpt", { required: true })}
+            {...register("excerpt", { validate: validateExcerpt })}
             id="excerpt"
             rows={5}
             className="bg-light-parchment rounded-lg border p-2 outline-none"
             placeholder="Write a small excerpt about your essay"
+          />
+          <FormValidationError
+            field={errors.excerpt}
+            errorType="validate"
+            message="Excerpt is required"
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -89,7 +124,7 @@ const EssayForm = ({ data }: EssayFormProps) => {
             Category
           </label>
           <select
-            {...register("category", { required: true })}
+            {...register("category", { validate: validateCategory })}
             defaultValue="default"
             id="category"
             className="bg-light-parchment rounded-lg border p-2 outline-none"
@@ -101,6 +136,11 @@ const EssayForm = ({ data }: EssayFormProps) => {
             <option value="history">History</option>
             <option value="culture">Culture</option>
           </select>
+          <FormValidationError
+            field={errors.category}
+            errorType="validate"
+            message="Please select a category"
+          />
         </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="tags" className="text-maroon text-xl font-semibold">
@@ -113,6 +153,11 @@ const EssayForm = ({ data }: EssayFormProps) => {
             className="bg-light-parchment rounded-lg border p-2 outline-none"
             placeholder="Add related tags (press Enter)..."
             onKeyDown={handleTagAdd}
+          />
+          <FormValidationError
+            field={errors.tags as FieldError | undefined}
+            errorType="validate"
+            message="Please add at least 3 tags"
           />
           <div className="mt-2 flex flex-wrap items-center gap-4">
             {tags.map((tag) => (

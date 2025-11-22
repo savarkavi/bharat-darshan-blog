@@ -11,7 +11,7 @@ import { useSaveDraft } from "../../api/blog/blogApi";
 import { ImSpinner2 } from "react-icons/im";
 
 const EditorHeader = () => {
-  const { handleSubmit } = useFormContext<IFormInput>();
+  const { handleSubmit, setValue } = useFormContext<IFormInput>();
   const editor = useEditorStore((state) => state.editor);
   const { mutate, isPending } = useSaveDraft();
   const { slug } = useParams();
@@ -30,6 +30,20 @@ const EditorHeader = () => {
     });
   };
 
+  const onPublishSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data);
+  };
+
+  const handleDraft = () => {
+    setValue("isPublished", false);
+    handleSubmit(onSubmit)();
+  };
+
+  const handlePublish = () => {
+    setValue("isPublished", true);
+    handleSubmit(onPublishSubmit)();
+  };
+
   return (
     <div className="bg-light-parchment flex items-center justify-between px-4 py-2">
       <Link to={"/"}>
@@ -41,7 +55,7 @@ const EditorHeader = () => {
           <span>Preview</span>
         </Button>
         <Button
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleDraft}
           className="bg-saffron flex h-8 w-32 items-center justify-center"
         >
           {isPending ? (
@@ -53,7 +67,10 @@ const EditorHeader = () => {
             </div>
           )}
         </Button>
-        <Button className="bg-maroon flex items-center gap-2">
+        <Button
+          onClick={handlePublish}
+          className="bg-maroon flex items-center gap-2"
+        >
           <MdOutlinePublish />
           <span>Publish</span>
         </Button>

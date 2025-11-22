@@ -9,6 +9,7 @@ export interface IFormInput {
   excerpt: string;
   category: string;
   tags: string[];
+  isPublished: boolean;
 }
 
 const EditorLayout = () => {
@@ -18,6 +19,7 @@ const EditorLayout = () => {
       excerpt: "",
       category: "",
       tags: [],
+      isPublished: false,
     },
   });
 
