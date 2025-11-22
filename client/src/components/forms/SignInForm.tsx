@@ -3,6 +3,7 @@ import Button from "../common/Button";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useSignIn } from "../../api/auth/authApi";
 import { ImSpinner2 } from "react-icons/im";
+import FormValidationError from "../common/FormValidationError";
 
 interface IFormInput {
   emailOrUsername: string;
@@ -41,11 +42,11 @@ const SignInForm = () => {
             className="rounded-lg border p-2 outline-none"
             placeholder="Enter your email address or username"
           />
-          {errors.emailOrUsername?.type === "required" && (
-            <p role="alert" className="text-red-600">
-              Email or Username is required
-            </p>
-          )}
+          <FormValidationError
+            field={errors.emailOrUsername}
+            errorType="required"
+            message="Email or Username is required"
+          />
         </div>
         <div className="flex flex-col gap-2">
           <label
@@ -61,16 +62,16 @@ const SignInForm = () => {
             className="rounded-lg border p-2 outline-none"
             placeholder="Enter your password"
           />
-          {errors.password?.type === "required" && (
-            <p role="alert" className="text-red-600">
-              Password is required
-            </p>
-          )}
-          {errors.password?.type === "minLength" && (
-            <p role="alert" className="text-red-600">
-              Password should be atleast 6 characters long
-            </p>
-          )}
+          <FormValidationError
+            field={errors.password}
+            errorType="required"
+            message="Password is required"
+          />
+          <FormValidationError
+            field={errors.password}
+            errorType="minLength"
+            message="Password should be atleast 6 characters long"
+          />
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
