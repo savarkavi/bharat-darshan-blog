@@ -108,7 +108,8 @@ export const updateBlog = async (req: Request, res: Response) => {
 export const saveDraft = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
-    const { title, content, excerpt, tags, category, coverImage } = req.body;
+    const { title, content, excerpt, tags, category } = req.body;
+    const coverImage = req.file ? req.file.path : req.body.coverImage;
 
     let blog;
 
@@ -119,28 +120,26 @@ export const saveDraft = async (req: Request, res: Response) => {
         return res.status(404).json({ message: "Blog not found" });
       }
 
-      blog.title = title || blog.title;
-      blog.content = content || blog.content;
-      blog.excerpt = excerpt || blog.excerpt;
-      blog.tags = tags || blog.tags;
-      blog.category = category || blog.category;
-      blog.coverImage = coverImage || blog.coverImage;
+      blog.title = title;
+      blog.content = JSON.parse(content);
+      blog.excerpt = excerpt;
+      blog.tags = JSON.parse(tags);
+      blog.category = category;
+      blog.coverImage = coverImage;
 
       if (title && title !== blog.title) {
         blog.slug = generateSlug(title);
       }
     } else {
-      console.log(req.user);
-
       blog = new Blog({
-        title: title || "Untitled draft",
-        content,
+        title,
+        content: JSON.parse(content),
         excerpt,
-        tags,
+        tags: JSON.parse(tags),
         category,
         coverImage,
         author: req.user?._id,
-        slug: generateSlug(title || "untitled draft"),
+        slug: generateSlug(title),
       });
     }
 
