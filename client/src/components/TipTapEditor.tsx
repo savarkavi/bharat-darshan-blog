@@ -14,7 +14,7 @@ interface TipTapEditorProps {
 }
 
 const TiptapEditor = ({ data }: TipTapEditorProps) => {
-  const setEditor = useEditorStore((state) => state.setEditor);
+  const { setEditor } = useEditorStore();
 
   const editor = useEditor({
     onCreate: ({ editor }) => setEditor(editor),
@@ -25,6 +25,7 @@ const TiptapEditor = ({ data }: TipTapEditorProps) => {
     onFocus: ({ editor }) => setEditor(editor),
     onBlur: ({ editor }) => setEditor(editor),
     onContentError: ({ editor }) => setEditor(editor),
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       BulletList,
