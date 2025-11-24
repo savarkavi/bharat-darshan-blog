@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetBlog } from "../api/blog/blogApi";
 import EssayForm from "../components/forms/EssayForm";
 import TiptapEditor from "../components/TipTapEditor";
@@ -6,8 +6,13 @@ import { ImSpinner2 } from "react-icons/im";
 
 const EssayEditor = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
 
   const { data, isLoading } = useGetBlog(slug);
+
+  if (!data) {
+    navigate("/editor");
+  }
 
   if (isLoading)
     return (
