@@ -4,6 +4,7 @@ import type { Blog } from "../../types/types";
 import { useEffect, useState, useCallback } from "react";
 import { RxCross2 } from "react-icons/rx";
 import FormValidationError from "../common/FormValidationError";
+import { FaFileImage } from "react-icons/fa6";
 
 interface EssayFormProps {
   data: Blog | undefined;
@@ -19,6 +20,7 @@ const EssayForm = ({ data }: EssayFormProps) => {
     formState: { errors },
   } = useFormContext<IFormInput>();
   const [tagInput, setTagInput] = useState("");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const tags = watch("tags");
 
@@ -32,8 +34,13 @@ const EssayForm = ({ data }: EssayFormProps) => {
         category: data.category,
         tags: data.tags,
       });
+
+      if (data.coverImage) {
+        setImagePreview(data.coverImage);
+        setValue("coverImage", data.coverImage);
+      }
     }
-  }, [data, reset]);
+  }, [data, reset, setValue]);
 
   useEffect(() => {
     register("tags", {
@@ -69,6 +76,21 @@ const EssayForm = ({ data }: EssayFormProps) => {
   const validateCategory = (value: string) => {
     if (!isPublishing()) return true;
     return (value && value !== "default") || "Category is required to publish";
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const previewURL = URL.createObjectURL(file);
+      setImagePreview(previewURL);
+      setValue("coverImage", file as File);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setValue("coverImage", null);
   };
 
   return (
@@ -141,6 +163,42 @@ const EssayForm = ({ data }: EssayFormProps) => {
             errorType="validate"
             message="Please select a category"
           />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-maroon text-xl font-semibold">
+            Cover Image
+          </label>
+          <input
+            id="coverImage"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageChange}
+          />
+          {imagePreview ? (
+            <div className="group relative h-40 w-full overflow-hidden rounded-lg">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="h-full w-full object-cover"
+              />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute top-2 right-2 cursor-pointer rounded-full bg-white p-1 text-red-500 shadow-md transition hover:bg-gray-100"
+              >
+                <RxCross2 />
+              </button>
+            </div>
+          ) : (
+            <label
+              htmlFor="coverImage"
+              className="border-maroon/50 bg-light-parchment text-maroon/70 flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition hover:bg-white"
+            >
+              <FaFileImage size={30} />
+              <span className="mt-2 text-sm">Click to upload cover</span>
+            </label>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="tags" className="text-maroon text-xl font-semibold">

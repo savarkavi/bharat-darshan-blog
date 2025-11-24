@@ -12,20 +12,32 @@ import { ImSpinner2 } from "react-icons/im";
 
 const EditorHeader = () => {
   const { handleSubmit, setValue } = useFormContext<IFormInput>();
-  const editor = useEditorStore((state) => state.editor);
+  const { editor } = useEditorStore();
   const { mutate, isPending } = useSaveDraft();
   const { slug } = useParams();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    const formData = new FormData();
+
+    formData.append("title", data.essayTitle);
+    formData.append("excerpt", data.excerpt);
+    formData.append("category", data.category);
+    formData.append("content", JSON.stringify(editor?.getJSON()));
+    formData.append("tags", JSON.stringify(data.tags));
+
+    if (data.coverImage && data.coverImage instanceof File) {
+      formData.append("coverImage", data.coverImage);
+    }
+
+    if (typeof data.coverImage === "string") {
+      formData.append("coverImage", data.coverImage);
+    }
+
+    console.log(data.coverImage);
+    console.log(formData);
+
     mutate({
-      data: {
-        title: data.essayTitle,
-        excerpt: data.excerpt,
-        category: data.category,
-        content: editor?.getJSON(),
-        coverImage: "adfsd",
-        tags: data.tags,
-      },
+      data: formData,
       slug,
     });
   };

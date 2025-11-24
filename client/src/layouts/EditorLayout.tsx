@@ -9,6 +9,7 @@ export interface IFormInput {
   excerpt: string;
   category: string;
   tags: string[];
+  coverImage: File | string | null;
   isPublished: boolean;
 }
 
@@ -18,6 +19,7 @@ const EditorLayout = () => {
       essayTitle: "",
       excerpt: "",
       category: "",
+      coverImage: null,
       tags: [],
       isPublished: false,
     },

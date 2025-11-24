@@ -1,15 +1,7 @@
 import api from "./api";
 
 interface SaveDraftParams {
-  data: {
-    title: string;
-    excerpt: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    content: any;
-    coverImage: string;
-    tags: string[];
-    category: string;
-  };
+  data: FormData;
   slug: string | undefined;
 }
 
