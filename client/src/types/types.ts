@@ -1,4 +1,11 @@
-export interface Blog {
+export interface Author {
+  _id: string;
+  fullname: string;
+  username: string;
+  avatar?: string;
+}
+
+export interface Blog<TAuthor = Author> {
   _id: string;
   slug: string;
   title: string;
@@ -10,9 +17,11 @@ export interface Blog {
   tags: string[];
   createdAt: string;
   updatedAt: string;
-  author: {
-    _id: string;
-    fullname: string;
-    username: string;
-  };
+  author: TAuthor;
+}
+
+export interface GetAllBlogsResponse {
+  blogs: Blog[];
+  currentPage: number;
+  hasMore: boolean;
 }

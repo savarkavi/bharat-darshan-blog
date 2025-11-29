@@ -4,12 +4,24 @@ import { generateSlug } from "../utils/generateSlug.ts";
 
 export const getAllBlogs = async (req: Request, res: Response) => {
   try {
-    const blogs = await Blog.find().populate(
-      "author",
-      "fullname username avatar"
-    );
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
 
-    res.json(blogs);
+    const blogs = await Blog.find()
+      .populate("author", "_id fullname username avatar")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalBlogs = await Blog.countDocuments();
+    const hasMore = skip + blogs.length < totalBlogs;
+
+    res.json({
+      blogs,
+      currentPage: page,
+      hasMore,
+    });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -24,7 +36,7 @@ export const getBlogBySlug = async (req: Request, res: Response) => {
 
     const blog = await Blog.findOne({ slug }).populate(
       "author",
-      "fullname username avatar"
+      "_id fullname username avatar"
     );
 
     if (!blog) {
