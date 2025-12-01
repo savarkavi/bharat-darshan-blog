@@ -72,6 +72,7 @@ export const signUp = async (req: Request, res: Response) => {
       username: user.username,
       email: user.email,
       role: user.role,
+      avatar: user.avatar,
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -118,6 +119,7 @@ export const signIn = async (req: Request, res: Response) => {
       username: user.username,
       email: user.email,
       role: user.role,
+      avatar: user.avatar,
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -238,6 +240,7 @@ export const getAuthUser = async (req: Request, res: Response) => {
       username: user.username,
       email: user.email,
       role: user.role,
+      avatar: user.avatar,
     });
   } catch (error) {
     if (error instanceof Error) {
