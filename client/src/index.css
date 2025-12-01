@@ -9,6 +9,7 @@
 }
 
 @theme {
+  --color-lightest-parchment: #fdf5e6;
   --color-light-parchment: #f4ead5;
   --color-dark-parchment: #e6d3a3;
   --color-copper-brown: #a97142;
