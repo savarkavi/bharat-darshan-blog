@@ -70,17 +70,30 @@ const DropdownTrigger = ({ children }: DropdownTriggerProps) => {
 interface DropdownContentProps {
   children: React.ReactNode;
   classNames?: string;
+  position?: "Left" | "Center" | "Right";
 }
 
-const DropdownContent = ({ children, classNames }: DropdownContentProps) => {
+const DropdownContent = ({
+  children,
+  classNames,
+  position = "Center",
+}: DropdownContentProps) => {
   const { isOpen } = useDropdown();
 
   if (!isOpen) return null;
 
+  const positionClass =
+    position === "Left"
+      ? "left-0"
+      : position === "Center"
+        ? "left-1/2 -translate-x-1/2"
+        : "right-0";
+
   return (
     <div
       className={cn(
-        "bg-dark-parchment absolute top-12 left-1/2 z-99 w-fit -translate-x-1/2 rounded-md p-4 shadow-lg",
+        "bg-dark-parchment absolute top-12 z-99 w-fit rounded-md p-4 shadow-lg",
+        positionClass,
         classNames,
       )}
     >
