@@ -1,5 +1,6 @@
 import axios from "axios";
 import api from "./api";
+import type { User } from "../types/types";
 
 interface SignInDataType {
   emailOrUsername: string;
@@ -15,12 +16,12 @@ interface SignUpDataType {
 
 export const authService = {
   signIn: async (data: SignInDataType) => {
-    const res = await api.post("/auth/sign-in", data);
+    const res = await api.post<User>("/auth/sign-in", data);
     return res.data;
   },
 
   signUp: async (data: SignUpDataType) => {
-    const res = await api.post("/auth/sign-up", data);
+    const res = await api.post<User>("/auth/sign-up", data);
     return res.data;
   },
 
@@ -30,7 +31,7 @@ export const authService = {
 
   fetchAuthUser: async () => {
     try {
-      const res = await api.get("/auth/me");
+      const res = await api.get<User>("/auth/me");
       return res.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.status === 401) {

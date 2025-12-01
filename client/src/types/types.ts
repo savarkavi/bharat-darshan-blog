@@ -25,3 +25,12 @@ export interface GetAllBlogsResponse {
   currentPage: number;
   hasMore: boolean;
 }
+
+export interface User {
+  _id: string;
+  fullname: string;
+  username: string;
+  avatar?: string;
+  email: string;
+  role: "user" | "admin";
+}
