@@ -1,3 +1,4 @@
+import type { Blog, GetAllBlogsResponse } from "../types/types";
 import api from "./api";
 
 interface SaveDraftParams {
@@ -8,10 +9,10 @@ interface SaveDraftParams {
 export const blogService = {
   saveDraft: async ({ data, slug }: SaveDraftParams) => {
     if (slug) {
-      const res = await api.put(`blogs/draft/${slug}`, data);
+      const res = await api.put<Blog<string>>(`blogs/draft/${slug}`, data);
       return res.data;
     } else {
-      const res = await api.post("blogs/draft", data);
+      const res = await api.post<Blog<string>>("blogs/draft", data);
       return res.data;
     }
   },
@@ -19,7 +20,14 @@ export const blogService = {
   getBlog: async (slug: string | undefined) => {
     if (!slug) return;
 
-    const res = await api.get(`/blogs/${slug}`);
+    const res = await api.get<Blog>(`/blogs/${slug}`);
+    return res.data;
+  },
+
+  getAllBlogs: async (pageParams: number) => {
+    const res = await api.get<GetAllBlogsResponse>(
+      `/blogs?page=${pageParams}&limit=9`,
+    );
     return res.data;
   },
 };

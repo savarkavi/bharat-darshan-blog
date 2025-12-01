@@ -1,16 +1,31 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { blogService } from "../../services/blogService";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
 import type { ApiError } from "../../types/global";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Blog } from "../../types/types";
 
 export const useGetBlog = (slug: string | undefined) => {
-  return useQuery<Blog>({
+  return useQuery({
     queryKey: ["blog", slug],
     queryFn: () => blogService.getBlog(slug),
     enabled: !!slug,
+  });
+};
+
+export const useGetAllBlogs = () => {
+  return useInfiniteQuery({
+    queryKey: ["blogs"],
+    queryFn: ({ pageParam }) => blogService.getAllBlogs(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.currentPage + 1 : undefined,
+    staleTime: Infinity,
   });
 };
 
