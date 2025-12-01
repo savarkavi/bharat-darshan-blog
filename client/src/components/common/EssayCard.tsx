@@ -1,5 +1,6 @@
 import type { Blog } from "../../types/types";
 import { CiBookmark } from "react-icons/ci";
+import { format } from "date-fns";
 
 interface EssayCardProps {
   blog: Blog;
@@ -28,9 +29,9 @@ const EssayCard = ({ blog }: EssayCardProps) => {
             {blog.excerpt}
           </p>
         </div>
-        <div className="text-saffron border-dark-parchment flex items-center gap-2 border-t pt-4 font-semibold">
-          <p>Oct 25.</p>
-          <p>Sushant Sharma</p>
+        <div className="text-saffron border-dark-parchment flex items-center justify-between gap-2 border-t pt-4 font-semibold">
+          <p className="capitalize">{blog.author.fullname}</p>
+          <p>{format(blog.createdAt, "do LLL y")}</p>
         </div>
       </div>
     </div>
