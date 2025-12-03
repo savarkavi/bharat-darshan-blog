@@ -29,7 +29,7 @@ const Header = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 z-99 flex w-full items-center justify-between px-4 py-2 transition-all ${scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent"}`}
+      className={`fixed top-0 left-0 z-99 flex h-[64px] w-full items-center justify-between px-4 py-2 transition-all ${scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent"}`}
     >
       <Link to={"/"}>
         <img src={logo} alt="logo" className="h-12 w-12" />
