@@ -8,6 +8,12 @@
   src: url("./fonts/samarkan.TTF") format("truetype");
 }
 
+@font-face {
+  font-family: Bolton;
+  font-style: normal;
+  src: url("./fonts/BoltonLight.ttf");
+}
+
 @theme {
   --color-lightest-parchment: #fdf5e6;
   --color-light-parchment: #f4ead5;
@@ -20,6 +26,7 @@
   --color-ash-grey: #b2b0a6;
 
   --font-samarkan: Samarkan;
+  --font-bolton: Bolton;
   --font-garamond: "EB Garamond", serif;
 }
 
