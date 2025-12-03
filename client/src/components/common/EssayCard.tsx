@@ -1,6 +1,7 @@
 import type { Blog } from "../../types/types";
 import { CiBookmark } from "react-icons/ci";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 interface EssayCardProps {
   blog: Blog;
@@ -8,7 +9,10 @@ interface EssayCardProps {
 
 const EssayCard = ({ blog }: EssayCardProps) => {
   return (
-    <div className="group bg-lightest-parchment mx-auto flex h-[520px] w-full max-w-[400px] flex-col rounded-md">
+    <Link
+      to={`/essays/${blog.slug}`}
+      className="group bg-lightest-parchment mx-auto flex h-[520px] w-full max-w-[400px] flex-col rounded-md"
+    >
       <div className="relative h-[450px] w-[400px] overflow-hidden">
         <img
           src={blog.coverImage}
@@ -31,10 +35,10 @@ const EssayCard = ({ blog }: EssayCardProps) => {
         </div>
         <div className="text-saffron border-dark-parchment flex items-center justify-between gap-2 border-t pt-4 font-semibold">
           <p className="capitalize">{blog.author.fullname}</p>
-          <p>{format(blog.createdAt, "do LLL y")}</p>
+          <p className="text-camel-tan">{format(blog.createdAt, "do LLL y")}</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
