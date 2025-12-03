@@ -9,6 +9,7 @@ import EssayEditor from "./pages/EssayEditor";
 import MainLayout from "./layouts/MainLayout";
 import EditorLayout from "./layouts/EditorLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Essay from "./pages/Essay";
 
 function App() {
   const { isLoading } = useAuthUser();
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/essays/:slug" element={<Essay />} />
         </Route>
 
         <Route
