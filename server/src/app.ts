@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes.ts";
 import blogRoutes from "./routes/blogRoutes.ts";
+import aiRoutes from "./routes/aiRoutes.ts";
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use(
 
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/ai", aiRoutes);
 
 export default app;

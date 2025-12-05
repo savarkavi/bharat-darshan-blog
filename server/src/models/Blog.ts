@@ -10,6 +10,12 @@ const blogSchema = new mongoose.Schema(
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     tags: [{ type: String, lowercase: true }],
     category: { type: String },
+    researchResults: [
+      {
+        query: { type: String },
+        research: { type: Schema.Types.Mixed },
+      },
+    ],
     status: {
       type: String,
       enum: ["draft", "reviewPending", "published"],
