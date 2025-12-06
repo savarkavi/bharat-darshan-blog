@@ -39,8 +39,8 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route element={<EditorLayout />}>
-            <Route path="/editor/:slug" element={<EssayEditor />} />
+          <Route path="/editor" element={<EditorLayout />}>
+            <Route path=":slug" element={<EssayEditor />} />
           </Route>
         </Route>
       </Routes>

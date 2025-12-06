@@ -3,6 +3,7 @@ import { useGetBlog } from "../api/blog/blogApi";
 import EssayForm from "../components/forms/EssayForm";
 import TiptapEditor from "../components/TipTapEditor";
 import { ImSpinner2 } from "react-icons/im";
+import EditorAICompanion from "../components/EditorAICompanion";
 
 const EssayEditor = () => {
   const { slug } = useParams();
@@ -10,8 +11,9 @@ const EssayEditor = () => {
 
   const { data, isLoading } = useGetBlog(slug);
 
-  if (!data) {
-    navigate("/editor");
+  if (!slug || !data) {
+    navigate("/");
+    return null;
   }
 
   if (isLoading)
@@ -22,9 +24,10 @@ const EssayEditor = () => {
     );
 
   return (
-    <div className="bg-light-parchment relative flex min-h-screen">
+    <div className="bg-light-parchment relative flex h-full">
       <EssayForm data={data} />
       <TiptapEditor data={data} />
+      <EditorAICompanion slug={slug} data={data} />
     </div>
   );
 };
