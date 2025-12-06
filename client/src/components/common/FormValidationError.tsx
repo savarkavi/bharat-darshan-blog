@@ -15,7 +15,7 @@ const FormValidationError = ({
   return (
     field?.type === errorType && (
       <div className="flex items-center gap-1 text-red-500">
-        <MdError />
+        <MdError className="size-5" />
         <p role="alert" className="text-lg text-red-600">
           {message}
         </p>
