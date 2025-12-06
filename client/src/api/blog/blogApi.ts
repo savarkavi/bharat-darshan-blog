@@ -8,7 +8,7 @@ import { blogService } from "../../services/blogService";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
 import type { ApiError } from "../../types/global";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const useGetBlog = (slug: string | undefined) => {
   return useQuery({
@@ -50,6 +50,8 @@ export const useCreateBlog = () => {
 };
 
 export const useSaveDraft = () => {
+  const navigate = useNavigate();
+  const { slug: currentSlug } = useParams();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -60,6 +62,10 @@ export const useSaveDraft = () => {
       queryClient.setQueryData(["blog", slug], data);
 
       toast.success("Draft saved");
+
+      if (slug !== currentSlug) {
+        navigate(`/editor/${slug}`, { replace: true });
+      }
     },
     onError: (error: AxiosError<ApiError>) => {
       console.log(error.response?.data.message);
