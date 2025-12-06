@@ -94,7 +94,7 @@ const EssayForm = ({ data }: EssayFormProps) => {
   };
 
   return (
-    <div className="bg-dark-parchment border-ash-grey absolute top-0 left-0 h-screen w-full max-w-[350px] border-r p-8">
+    <div className="bg-dark-parchment border-ash-grey absolute top-0 left-0 h-full w-full max-w-[350px] border-r p-8">
       <form
         className="flex flex-col gap-8"
         onSubmit={(e) => e.preventDefault()}

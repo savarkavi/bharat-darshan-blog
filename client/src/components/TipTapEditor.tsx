@@ -49,7 +49,7 @@ const TiptapEditor = ({ data }: TipTapEditorProps) => {
   });
 
   return (
-    <div className="mx-auto h-screen w-full max-w-[800px] overflow-y-scroll bg-white">
+    <div className="mx-auto h-full w-full max-w-[800px] overflow-y-scroll bg-white">
       <EditorContent editor={editor} />
     </div>
   );
