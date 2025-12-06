@@ -7,6 +7,7 @@ import Avatar from "react-avatar";
 import { DropdownMenu } from "../common/Dropdown";
 import { FaUser } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
+import NewEssayButton from "../NewEssayButton";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -41,7 +42,7 @@ const Header = () => {
         <a href="/">History</a>
       </div>
       {isAuthenticated ? (
-        <div>
+        <div className="flex items-center gap-4">
           <DropdownMenu>
             <DropdownMenu.Trigger>
               <Avatar
@@ -69,6 +70,7 @@ const Header = () => {
               </div>
             </DropdownMenu.Content>
           </DropdownMenu>
+          <NewEssayButton />
         </div>
       ) : (
         <Link to={"/sign-in"}>

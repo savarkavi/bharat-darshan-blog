@@ -8,7 +8,7 @@ import { blogService } from "../../services/blogService";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
 import type { ApiError } from "../../types/global";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const useGetBlog = (slug: string | undefined) => {
   return useQuery({
@@ -29,9 +29,27 @@ export const useGetAllBlogs = () => {
   });
 };
 
-export const useSaveDraft = () => {
+export const useCreateBlog = () => {
   const navigate = useNavigate();
-  const { slug: currentSlug } = useParams();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: blogService.createBlog,
+    onSuccess: (data) => {
+      const slug = data.slug;
+
+      queryClient.setQueryData(["blog", slug], data);
+
+      navigate(`/editor/${slug}`, { replace: true });
+    },
+    onError: (error: AxiosError<ApiError>) => {
+      console.log(error.response?.data.message);
+      toast.error(error.response?.data.message);
+    },
+  });
+};
+
+export const useSaveDraft = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -42,9 +60,6 @@ export const useSaveDraft = () => {
       queryClient.setQueryData(["blog", slug], data);
 
       toast.success("Draft saved");
-
-      if (slug === currentSlug) return;
-      navigate(`/editor/${slug}`, { replace: true });
     },
     onError: (error: AxiosError<ApiError>) => {
       console.log(error.response?.data.message);

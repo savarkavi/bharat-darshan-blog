@@ -30,4 +30,9 @@ export const blogService = {
     );
     return res.data;
   },
+
+  createBlog: async () => {
+    const res = await api.post("/blogs");
+    return res.data;
+  },
 };
