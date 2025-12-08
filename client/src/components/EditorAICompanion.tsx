@@ -3,8 +3,10 @@ import { useAskPerplexity } from "../api/ai/aiApi";
 import Button from "./common/Button";
 import { ImSpinner2 } from "react-icons/im";
 import FormValidationError from "./common/FormValidationError";
-import type { Author, Blog } from "../types/types";
+import type { Author, Blog, PerplexityResearchResult } from "../types/types";
 import { FaCircle } from "react-icons/fa6";
+import AIQueriesModal from "./AIQueriesModal";
+import { useState } from "react";
 
 interface IFormInput {
   query: string;
@@ -22,6 +24,10 @@ const EditorAICompanion = ({ slug, data: blog }: EditorAICompanionProps) => {
     formState: { errors },
   } = useForm<IFormInput>();
   const { mutate, isPending } = useAskPerplexity();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedResearch, setSelectedResearch] =
+    useState<PerplexityResearchResult | null>(null);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) =>
     mutate({ query: data.query, blogSlug: slug });
@@ -60,15 +66,25 @@ const EditorAICompanion = ({ slug, data: blog }: EditorAICompanionProps) => {
         {blog.researchResults.map((result) => (
           <div
             key={result.research.id}
-            className="text-charcoal-black flex items-center gap-2"
+            className="text-charcoal-black hover:text-saffron flex items-center gap-2"
+            onClick={() => {
+              setSelectedResearch(result);
+              setIsModalOpen(true);
+            }}
           >
             <FaCircle className="size-2" />
-            <p className="line-clamp-1">
-              jasd sdnfs dlkfms dflms df sdfishdnpfksn fsdjf sdfm spdofj
+            <p className="line-clamp-1 cursor-pointer text-lg">
+              {result.research.search_results[0].title}
             </p>
           </div>
         ))}
       </div>
+      {isModalOpen && selectedResearch && (
+        <AIQueriesModal
+          selectedResearch={selectedResearch}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

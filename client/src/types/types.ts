@@ -5,6 +5,12 @@ export interface Author {
   avatar?: string;
 }
 
+export interface PerplexityResearchResult {
+  query: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  research: any;
+}
+
 export interface Blog<TAuthor = Author> {
   _id: string;
   slug: string;
@@ -15,6 +21,7 @@ export interface Blog<TAuthor = Author> {
   content: any;
   coverImage: string;
   tags: string[];
+  researchResults: PerplexityResearchResult[];
   createdAt: string;
   updatedAt: string;
   author: TAuthor;
