@@ -26,14 +26,18 @@ const EditorLayout = () => {
   });
 
   return (
-    <>
-      <FormProvider {...methods}>
-        <EditorHeader />
-        <Toolbar />
-        <Outlet />
+    <FormProvider {...methods}>
+      <div className="flex min-h-screen flex-col justify-between">
+        <div>
+          <EditorHeader />
+          <Toolbar />
+        </div>
+        <div className="bg-light-parchment min-h-screen">
+          <Outlet />
+        </div>
         <Footer />
-      </FormProvider>
-    </>
+      </div>
+    </FormProvider>
   );
 };
 
