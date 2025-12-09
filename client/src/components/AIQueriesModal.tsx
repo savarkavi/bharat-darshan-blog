@@ -9,11 +9,14 @@ interface AIQueriesModalProps {
 }
 
 const AIQueriesModal = ({ selectedResearch, onClose }: AIQueriesModalProps) => {
-  const formattedContent =
-    selectedResearch.research.choices[0].message.content.replace(
-      /<think>[\s\S]*?<\/think>/g,
-      "",
-    );
+  const formattedContent = selectedResearch.research.choices[0].message.content
+    .replace(/<think>[\s\S]*?<\/think>/g, "")
+    .replace(/\[(\d+)\]/g, (match: string, number: string) => {
+      const index = parseInt(number) - 1;
+      const url = selectedResearch.research.citations[index];
+
+      return url ? `[[${number}]](${url})` : match;
+    });
 
   return (
     <div
@@ -72,6 +75,9 @@ const AIQueriesModal = ({ selectedResearch, onClose }: AIQueriesModalProps) => {
               ),
               li: ({ ...props }) => (
                 <li style={{ marginBottom: "0.5rem" }} {...props} />
+              ),
+              a: ({ ...props }) => (
+                <a style={{ color: "#1447e6 " }} target="_blank" {...props} />
               ),
             }}
           >
