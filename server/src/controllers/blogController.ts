@@ -8,7 +8,7 @@ export const getAllBlogs = async (req: Request, res: Response) => {
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;
 
-    const blogs = await Blog.find()
+    const blogs = await Blog.find({ status: "published" })
       .populate("author", "_id fullname username avatar")
       .sort({ createdAt: -1 })
       .skip(skip)
