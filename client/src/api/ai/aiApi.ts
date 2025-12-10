@@ -1,18 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { aiService } from "../../services/aiService";
-import type { AxiosError } from "axios";
-import type { ApiError } from "../../types/global";
 import { toast } from "react-toastify";
 
 export const useAskPerplexity = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: aiService.askPerplexity,
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["blog", variables.blogSlug],
+      });
     },
-    onError: (error: AxiosError<ApiError>) => {
-      console.log(error.response?.data.message);
-      toast.error(error.response?.data.message);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      console.log(error);
+      toast.error(error.message || "Streaming failed");
     },
   });
 };
