@@ -5,6 +5,6 @@ import { verifiedOnly } from "../middleware/verifyEmail.ts";
 
 const router = express.Router();
 
-router.put("/ask-perplexity", protect, verifiedOnly, askPerplexity);
+router.post("/ask-perplexity", protect, verifiedOnly, askPerplexity);
 
 export default router;

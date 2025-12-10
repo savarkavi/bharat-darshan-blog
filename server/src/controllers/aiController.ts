@@ -6,8 +6,8 @@ export const askPerplexity = async (req: Request, res: Response) => {
   try {
     const { query, blogSlug } = req.body;
 
-    if (!blogSlug) {
-      return res.status(400).json({ message: "Invalid slug" });
+    if (!blogSlug || !query) {
+      return res.status(400).json({ message: "Invalid request" });
     }
 
     const blog = await Blog.findOne({ slug: blogSlug });
@@ -20,20 +20,47 @@ export const askPerplexity = async (req: Request, res: Response) => {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    if (!query) {
-      return res.status(400).json({ message: "Undefined query" });
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Transfer-Encoding", "chunked");
+
+    const stream = await ask(query);
+
+    let fullAnswer = "";
+    let searchResults: any[] = [];
+    let citations: string[] = [];
+
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content;
+
+      if (content) {
+        res.write(content);
+
+        fullAnswer += content;
+      }
+
+      if (chunk.search_results) {
+        searchResults = chunk.search_results;
+      }
+
+      if (chunk.citations) {
+        citations = chunk.citations;
+      }
     }
 
-    const data = await ask(query);
+    if (fullAnswer) {
+      blog.researchResults.push({
+        query,
+        research: {
+          content: fullAnswer,
+          search_results: searchResults,
+          citations,
+        },
+      });
 
-    blog.researchResults.push({
-      query,
-      research: data,
-    });
+      await blog.save();
+    }
 
-    await blog.save();
-
-    return res.json(data);
+    res.end();
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });

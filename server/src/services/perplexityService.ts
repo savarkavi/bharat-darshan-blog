@@ -17,6 +17,7 @@ export async function ask(query: string) {
         content: query,
       },
     ],
+    stream: true,
   });
 
   return completion;
