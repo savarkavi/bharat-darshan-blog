@@ -28,9 +28,24 @@ const EditorAICompanion = ({ slug, data: blog }: EditorAICompanionProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedResearch, setSelectedResearch] =
     useState<PerplexityResearchResult | null>(null);
+  const [researchOutput, setResearchOutput] = useState("");
+  const [hasStreamStarted, setHasStreamStarted] = useState(false);
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) =>
-    mutate({ query: data.query, blogSlug: slug });
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    setSelectedResearch(null);
+    setResearchOutput("");
+    setHasStreamStarted(false);
+    setIsModalOpen(true);
+
+    mutate({
+      query: data.query,
+      blogSlug: slug,
+      onChunk: (chunk: string) => {
+        setHasStreamStarted(true);
+        setResearchOutput((prev) => prev + chunk);
+      },
+    });
+  };
 
   return (
     <div className="bg-dark-parchment border-ash-grey absolute top-0 right-0 flex h-full w-full max-w-[350px] flex-col gap-8 border-r p-8">
@@ -62,26 +77,28 @@ const EditorAICompanion = ({ slug, data: blog }: EditorAICompanionProps) => {
         Your Queries
       </p>
 
-      <div>
-        {blog.researchResults.map((result) => (
+      <div className="flex flex-col gap-2">
+        {blog.researchResults.map((result, i) => (
           <div
-            key={result.research.id}
-            className="text-charcoal-black hover:text-saffron flex items-center gap-2"
+            key={i}
+            className="text-charcoal-black hover:text-saffron flex items-center gap-2 select-none"
             onClick={() => {
               setSelectedResearch(result);
               setIsModalOpen(true);
             }}
           >
-            <FaCircle className="size-2" />
+            <FaCircle className="size-[6px] shrink-0" />
             <p className="line-clamp-1 cursor-pointer text-lg">
               {result.research.search_results[0].title}
             </p>
           </div>
         ))}
       </div>
-      {isModalOpen && selectedResearch && (
+      {isModalOpen && (
         <AIQueriesModal
           selectedResearch={selectedResearch}
+          researchOutput={researchOutput}
+          isPending={selectedResearch ? false : !hasStreamStarted}
           onClose={() => setIsModalOpen(false)}
         />
       )}
