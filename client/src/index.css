@@ -33,3 +33,20 @@
 body {
   font-family: "EB Garamond", serif;
 }
+
+@layer utilities {
+  .scrollbar-thin-custom::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin-custom::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin-custom::-webkit-scrollbar-thumb {
+    background-color: #7e7e7c;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+}
