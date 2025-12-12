@@ -2,10 +2,12 @@ import { IoMdClose } from "react-icons/io";
 import type { PerplexityResearchResult } from "../types/types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { MagnifyingGlass } from "react-loader-spinner";
+import { MagnifyingGlass, ThreeDots } from "react-loader-spinner";
+import { cn } from "../lib/utils";
 
 interface AIQueriesModalProps {
   selectedResearch: PerplexityResearchResult | null;
+  hasStreamStarted: boolean;
   isPending: boolean;
   researchOutput: string;
   onClose: () => void;
@@ -14,24 +16,37 @@ interface AIQueriesModalProps {
 const AIQueriesModal = ({
   selectedResearch,
   researchOutput,
+  hasStreamStarted,
   isPending,
   onClose,
 }: AIQueriesModalProps) => {
-  const formattedContent =
-    selectedResearch &&
-    selectedResearch.research.content
-      .replace(/<think>[\s\S]*?<\/think>/g, "")
-      .replace(/\[(\d+)\]/g, (match: string, number: string) => {
-        const index = parseInt(number) - 1;
-        const url = selectedResearch.research.citations[index];
+  const formattedContent = selectedResearch
+    ? selectedResearch.research.content
+        .replace(/<think>[\s\S]*?<\/think>/g, "")
+        .replace(/\[(\d+)\]/g, (match: string, number: string) => {
+          const index = parseInt(number) - 1;
+          const url = selectedResearch.research.citations[index];
 
-        return url ? `[[${number}]](${url})` : match;
-      });
+          return url ? `[[${number}]](${url})` : match;
+        })
+    : researchOutput.trim().replace(/<think>[\s\S]*?<\/think>/g, "");
+
+  const isInitializing = !hasStreamStarted && !selectedResearch;
+
+  const isThinking =
+    !selectedResearch &&
+    hasStreamStarted &&
+    formattedContent.trim().startsWith("<think>");
+
+  const showLoader = isInitializing || isThinking;
 
   return (
     <div
       className="fixed inset-0 z-50 flex h-full w-full items-center justify-center"
-      onClick={onClose}
+      onClick={() => {
+        if (isPending) return;
+        onClose();
+      }}
     >
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
@@ -39,24 +54,50 @@ const AIQueriesModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         <IoMdClose
-          className="absolute top-4 right-4 size-6 cursor-pointer"
-          onClick={onClose}
+          className={cn(
+            "absolute top-4 right-4 size-6",
+            isPending ? "cursor-not-allowed" : "cursor-pointer",
+          )}
+          onClick={() => {
+            if (isPending) return;
+            onClose();
+          }}
         />
-        <div className="text-charcoal-black bg-light-parchment h-full overflow-y-scroll border px-6 py-4">
-          {isPending ? (
+        <div className="text-charcoal-black bg-light-parchment h-full overflow-y-auto border px-6 py-4">
+          {showLoader ? (
             <div className="flex h-full w-full flex-col items-center justify-center">
-              <MagnifyingGlass
-                visible={true}
-                height="80"
-                width="80"
-                ariaLabel="magnifying-glass-loading"
-                wrapperClass="magnifying-glass-wrapper"
-                glassColor="#c0efff"
-                color="#902c14"
-              />
-              <p className="text-charcoal-black text-xl font-semibold">
-                Wait while we research the web for you
-              </p>
+              {isInitializing && (
+                <div className="flex flex-col items-center gap-2">
+                  <MagnifyingGlass
+                    visible={true}
+                    height="80"
+                    width="80"
+                    ariaLabel="magnifying-glass-loading"
+                    wrapperClass="magnifying-glass-wrapper"
+                    glassColor="#c0efff"
+                    color="#902c14"
+                  />
+                  <p className="text-charcoal-black text-xl font-semibold">
+                    Wait while we research the web for you
+                  </p>
+                </div>
+              )}
+              {isThinking && (
+                <div className="text-charcoal-black flex flex-col items-center text-xl font-semibold">
+                  <div className="flex items-center gap-2">
+                    <p>Thinking</p>
+                    <ThreeDots
+                      visible={true}
+                      height="40"
+                      width="40"
+                      color="#902c14"
+                      radius="9"
+                      ariaLabel="three-dots-loading"
+                    />
+                  </div>
+                  <p>Analyzing search results</p>
+                </div>
+              )}
             </div>
           ) : (
             <ReactMarkdown
@@ -107,7 +148,7 @@ const AIQueriesModal = ({
                 ),
               }}
             >
-              {selectedResearch ? formattedContent : researchOutput}
+              {formattedContent}
             </ReactMarkdown>
           )}
         </div>
