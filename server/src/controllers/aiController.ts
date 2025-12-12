@@ -28,6 +28,8 @@ export const askPerplexity = async (req: Request, res: Response) => {
     let fullAnswer = "";
     let searchResults: any[] = [];
     let citations: string[] = [];
+    let model: string = "";
+    let createdAt: number | null = null;
 
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content;
@@ -45,6 +47,14 @@ export const askPerplexity = async (req: Request, res: Response) => {
       if (chunk.citations) {
         citations = chunk.citations;
       }
+
+      if (chunk.model) {
+        model = chunk.model;
+      }
+
+      if (chunk.created) {
+        createdAt = chunk.created;
+      }
     }
 
     if (fullAnswer) {
@@ -54,6 +64,8 @@ export const askPerplexity = async (req: Request, res: Response) => {
           content: fullAnswer,
           search_results: searchResults,
           citations,
+          model,
+          createdAt,
         },
       });
 
