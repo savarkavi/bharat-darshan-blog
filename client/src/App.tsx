@@ -10,6 +10,7 @@ import MainLayout from "./layouts/MainLayout";
 import EditorLayout from "./layouts/EditorLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Essay from "./pages/Essay";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const { isLoading } = useAuthUser();
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <div>
+      <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
