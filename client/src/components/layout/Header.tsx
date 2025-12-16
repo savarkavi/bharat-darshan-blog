@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import Button from "../common/Button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuthUser, useSignOut } from "../../api/auth/authApi";
 import Avatar from "react-avatar";
 import { DropdownMenu } from "../common/Dropdown";
@@ -13,6 +13,8 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated, user } = useAuthUser();
   const { mutate: signOut } = useSignOut();
+
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,12 +32,12 @@ const Header = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 z-99 flex h-[64px] w-full items-center justify-between px-4 py-2 transition-all ${scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent"}`}
+      className={`fixed top-0 left-0 z-99 flex h-[64px] w-full items-center justify-between px-4 py-2 transition-all ${pathname === "/" ? (scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent") : "bg-lightest-parchment border-dark-parchment border-b text-black shadow-sm"}`}
     >
       <Link to={"/"}>
         <img src={logo} alt="logo" className="h-12 w-12" />
       </Link>
-      <div className="hidden items-center gap-10 text-lg font-semibold xl:flex">
+      <div className="absolute top-1/2 left-1/2 hidden -translate-1/2 items-center gap-10 text-lg font-semibold xl:flex">
         <a href="/">Philosophy</a>
         <a href="/">Science</a>
         <a href="/">Culture</a>

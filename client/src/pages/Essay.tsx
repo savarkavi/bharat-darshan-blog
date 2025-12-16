@@ -30,8 +30,8 @@ const Essay = () => {
 
   return (
     <div>
-      <div className="bg-lightest-parchment mt-[64px] flex h-[calc(100vh-64px)] w-full items-center">
-        <div className="flex w-full flex-[40%] flex-col items-center justify-center gap-6 px-12 text-center">
+      <div className="bg-light-parchment mt-[64px] flex h-[calc(100vh-64px)] w-full items-center">
+        <div className="flex w-full flex-[50%] flex-col items-center justify-center gap-6 px-12 text-center">
           <h1 className="text-charcoal-black font-bolton text-7xl">
             {blog.title}
           </h1>
@@ -39,7 +39,7 @@ const Essay = () => {
             {blog.excerpt}
           </p>
         </div>
-        <div className="h-full w-full flex-[60%]">
+        <div className="h-full w-full flex-[50%]">
           <img
             src={blog?.coverImage}
             alt="essay cover image"

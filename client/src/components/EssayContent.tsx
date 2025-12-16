@@ -7,9 +7,9 @@ interface EssayContentProps {
 const EssayContent = ({ blog }: EssayContentProps) => {
   return (
     <div className="mx-auto flex w-full max-w-[1360px] gap-8 py-24">
-      <div className="mx-auto max-w-[900px]">
+      <div className="mx-auto max-w-[800px]">
         <div
-          className="text-3xl"
+          className="text-justify text-2xl"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         ></div>
       </div>
