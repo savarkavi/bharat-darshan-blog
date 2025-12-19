@@ -1,4 +1,3 @@
-import { ImSpinner2 } from "react-icons/im";
 import { useGetAllBlogs } from "../../api/blog/blogApi";
 import Button from "../common/Button";
 import EssayCard from "../common/EssayCard";
@@ -23,14 +22,11 @@ const FeaturedArticles = () => {
       </div>
       {hasNextPage && (
         <Button
+          isLoading={isFetchingNextPage}
           className="mx-auto min-w-28 py-2"
           onClick={() => fetchNextPage()}
         >
-          {isFetchingNextPage ? (
-            <ImSpinner2 className="my-1 animate-spin" />
-          ) : (
-            "Load More"
-          )}
+          Load More
         </Button>
       )}
     </div>

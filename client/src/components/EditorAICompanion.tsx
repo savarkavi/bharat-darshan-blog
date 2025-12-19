@@ -1,7 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useAskPerplexity } from "../api/ai/aiApi";
 import Button from "./common/Button";
-import { ImSpinner2 } from "react-icons/im";
 import FormValidationError from "./common/FormValidationError";
 import type { Author, Blog, PerplexityResearchResult } from "../types/types";
 import { FaCircle } from "react-icons/fa6";
@@ -91,8 +90,8 @@ const EditorAICompanion = ({ slug, data: blog }: EditorAICompanionProps) => {
           errorType="required"
           message="Query is required!"
         />
-        <Button className="w-24 self-end">
-          {isPending ? <ImSpinner2 className="my-1 animate-spin" /> : "Submit"}
+        <Button isLoading={isPending} className="w-24 self-end">
+          Submit
         </Button>
       </form>
       <p className="text-maroon text-center text-xl font-semibold">

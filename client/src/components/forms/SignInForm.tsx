@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Button from "../common/Button";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useSignIn } from "../../api/auth/authApi";
-import { ImSpinner2 } from "react-icons/im";
 import FormValidationError from "../common/FormValidationError";
 
 interface IFormInput {
@@ -82,8 +81,8 @@ const SignInForm = () => {
           </div>
           <p className="text-maroon cursor-pointer text-lg">Forgot password?</p>
         </div>
-        <Button className="flex py-2 text-lg">
-          {isPending ? <ImSpinner2 className="my-1 animate-spin" /> : "Sign In"}
+        <Button isLoading={isPending} className="flex py-2 text-lg">
+          Sign In
         </Button>
       </form>
       <div className="bg-copper-brown h-px w-full" />
