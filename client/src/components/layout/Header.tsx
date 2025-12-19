@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 z-99 flex h-[64px] w-full items-center justify-between px-4 py-2 transition-all ${pathname === "/" ? (scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent") : "bg-lightest-parchment border-dark-parchment border-b text-black shadow-sm"}`}
+      className={`fixed top-0 left-0 z-99 flex h-[64px] w-full items-center justify-between px-4 py-2 transition-all ${pathname === "/" ? (scrolled ? "bg-maroon text-white" : "text-saffron bg-transparent") : "bg-light-parchment border-dark-parchment border-b text-black shadow-sm"}`}
     >
       <Link to={"/"}>
         <img src={logo} alt="logo" className="h-12 w-12" />
