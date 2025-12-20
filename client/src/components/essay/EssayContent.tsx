@@ -1,4 +1,4 @@
-import type { Author, Blog } from "../types/types";
+import type { Author, Blog } from "../../types/types";
 
 interface EssayContentProps {
   blog: Blog<Author>;
@@ -6,7 +6,7 @@ interface EssayContentProps {
 
 const EssayContent = ({ blog }: EssayContentProps) => {
   return (
-    <div className="mx-auto flex w-full max-w-[1360px] gap-8 py-24">
+    <div className="mx-auto flex w-full max-w-[1300px] gap-8 pt-24">
       <div className="mx-auto max-w-[800px]">
         <div
           className="text-justify text-2xl"

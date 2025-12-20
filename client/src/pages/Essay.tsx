@@ -1,7 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import { useGetBlog } from "../api/blog/blogApi";
 import { ImSpinner2 } from "react-icons/im";
-import EssayContent from "../components/EssayContent";
+import EssayContent from "../components/essay/EssayContent";
+import EssayStats from "../components/essay/EssayStats";
+import EssayComments from "../components/essay/EssayComments";
 
 const Essay = () => {
   const { slug } = useParams();
@@ -30,7 +32,7 @@ const Essay = () => {
 
   return (
     <div>
-      <div className="bg-light-parchment mt-[64px] flex h-[calc(100vh-64px)] w-full items-center">
+      <div className="bg-lightest-parchment mt-[64px] flex h-[calc(100vh-64px)] w-full items-center">
         <div className="flex w-full flex-[50%] flex-col items-center justify-center gap-6 px-12 text-center">
           <h1 className="text-charcoal-black font-bolton text-7xl">
             {blog.title}
@@ -47,7 +49,11 @@ const Essay = () => {
           />
         </div>
       </div>
-      <EssayContent blog={blog} />
+      <div className="flex flex-col gap-16 pb-24">
+        <EssayContent blog={blog} />
+        <EssayStats />
+        <EssayComments blog={blog} />
+      </div>
     </div>
   );
 };
