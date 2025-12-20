@@ -41,3 +41,15 @@ export interface User {
   email: string;
   role: "user" | "admin";
 }
+
+export interface Comment {
+  _id: string;
+  blogId: string;
+  author: Author;
+  content: string;
+  parent: string;
+  likes: number;
+  repliesCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
