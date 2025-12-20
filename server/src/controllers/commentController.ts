@@ -108,3 +108,69 @@ export const createComment = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const getReplies = async (req: Request, res: Response) => {
+  try {
+    const { parentId } = req.query;
+
+    if (!parentId) {
+      return res.status(400).json({ message: "Invalid parent Id" });
+    }
+
+    const parentComment = await Comment.findById(parentId);
+
+    if (!parentComment) {
+      return res.status(404).json({ message: "Parent comment not found" });
+    }
+
+    const replies = await Comment.aggregate([
+      {
+        $match: {
+          parent: new mongoose.Types.ObjectId(parentId as string),
+        },
+      },
+      {
+        $lookup: {
+          from: "comments",
+          let: { commentId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$parent", "$$commentId"] },
+              },
+            },
+            { $count: "count" },
+          ],
+          as: "repliesMeta",
+        },
+      },
+      {
+        $addFields: {
+          repliesCount: {
+            $ifNull: [{ $arrayElemAt: ["$repliesMeta.count", 0] }, 0],
+          },
+        },
+      },
+      {
+        $project: {
+          repliesMeta: 0,
+        },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+    ]);
+
+    await Comment.populate(replies, {
+      path: "author",
+      select: "_id fullname username avatar",
+    });
+
+    return res.status(200).json(replies);
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
