@@ -3,7 +3,7 @@ import FooterNewsletter from "../FooterNewsletter";
 
 const Footer = () => {
   return (
-    <div className="bg-maroon h-full min-h-[350px] w-full px-4 py-12 xl:px-8">
+    <div className="bg-maroon h-full min-h-[300px] w-full px-4 py-12 xl:px-8">
       <div className="mx-auto flex max-w-[1360px] flex-col justify-between gap-24 xl:flex-row">
         <div className="flex flex-col gap-24 md:flex-row">
           <div className="flex flex-col gap-3">
