@@ -1,4 +1,4 @@
-import type { Comment } from "../types/types";
+import type { Comment, GetBlogComments } from "../types/types";
 import api from "./api";
 
 interface CreateCommentParams {
@@ -7,9 +7,21 @@ interface CreateCommentParams {
   parent: string | null;
 }
 
+interface GetBlogCommentsParams {
+  blogId: string;
+  pageParam: number;
+  limit: number;
+}
+
 export const commentService = {
-  getBlogComments: async (blogId: string) => {
-    const res = await api.get<Comment[]>(`/comments/?blogId=${blogId}`);
+  getBlogComments: async ({
+    blogId,
+    pageParam,
+    limit,
+  }: GetBlogCommentsParams) => {
+    const res = await api.get<GetBlogComments>(
+      `/comments/?blogId=${blogId}&page=${pageParam}&limit=${limit}`,
+    );
     return res.data;
   },
 
