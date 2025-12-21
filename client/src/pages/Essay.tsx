@@ -3,7 +3,7 @@ import { useGetBlog } from "../api/blog/blogApi";
 import { ImSpinner2 } from "react-icons/im";
 import EssayContent from "../components/essay/EssayContent";
 import EssayStats from "../components/essay/EssayStats";
-import EssayComments from "../components/essay/EssayComments";
+import CommentsContainer from "../components/common/CommentsContainer";
 
 const Essay = () => {
   const { slug } = useParams();
@@ -52,7 +52,7 @@ const Essay = () => {
       <div className="flex flex-col gap-16 pb-24">
         <EssayContent blog={blog} />
         <EssayStats />
-        <EssayComments blog={blog} />
+        <CommentsContainer blog={blog} limit={3} />
       </div>
     </div>
   );

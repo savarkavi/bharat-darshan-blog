@@ -11,6 +11,7 @@ import EditorLayout from "./layouts/EditorLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Essay from "./pages/Essay";
 import ScrollToTop from "./components/ScrollToTop";
+import EssayComments from "./pages/EssayComments";
 
 function App() {
   const { isLoading } = useAuthUser();
@@ -31,9 +32,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/essays/:slug" element={<Essay />} />
+          <Route path="/essays/:slug">
+            <Route index element={<Essay />} />
+            <Route path="comments" element={<EssayComments />} />
+          </Route>
         </Route>
-
         <Route
           element={
             <ProtectedRoute>
