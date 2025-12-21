@@ -6,6 +6,9 @@ import mongoose from "mongoose";
 export const getComments = async (req: Request, res: Response) => {
   try {
     const { blogId } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 3;
+    const skip = (page - 1) * limit;
 
     if (!blogId) {
       return res.status(400).json({ message: "Invalid blog Id" });
@@ -54,6 +57,12 @@ export const getComments = async (req: Request, res: Response) => {
       {
         $sort: { createdAt: -1 },
       },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
+      },
     ]);
 
     await Comment.populate(comments, {
@@ -61,7 +70,13 @@ export const getComments = async (req: Request, res: Response) => {
       select: "_id fullname username avatar",
     });
 
-    return res.status(200).json(comments);
+    const totalComments = await Comment.countDocuments({
+      blog: blogId,
+      parent: null,
+    });
+    const hasMore = skip + comments.length < totalComments;
+
+    return res.status(200).json({ comments, currentPage: page, hasMore });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
