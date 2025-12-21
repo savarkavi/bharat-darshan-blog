@@ -53,3 +53,9 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface GetBlogComments {
+  comments: Comment[];
+  currentPage: number;
+  hasMore: boolean;
+}
