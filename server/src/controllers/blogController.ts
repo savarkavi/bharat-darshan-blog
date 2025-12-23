@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import Blog from "../models/Blog.ts";
 import { generateSlug } from "../utils/generateSlug.ts";
+import Comment from "../models/Comment.ts";
 
 export const getAllBlogs = async (req: Request, res: Response) => {
   try {
@@ -43,7 +44,16 @@ export const getBlogBySlug = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    res.json(blog);
+    const totalComments = await Comment.countDocuments({
+      blog: blog._id,
+    });
+
+    const parentComments = await Comment.countDocuments({
+      blog: blog._id,
+      parent: null,
+    });
+
+    res.json({ blog, totalComments, parentComments });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
