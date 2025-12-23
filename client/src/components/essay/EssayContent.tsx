@@ -6,7 +6,7 @@ interface EssayContentProps {
 
 const EssayContent = ({ blog }: EssayContentProps) => {
   return (
-    <div className="mx-auto flex w-full max-w-[1300px] gap-8 pt-24">
+    <div className="flex gap-8 pt-24">
       <div className="mx-auto max-w-[800px]">
         <div
           className="text-justify text-2xl"
