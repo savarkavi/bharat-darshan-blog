@@ -24,6 +24,7 @@ export interface Blog<TAuthor = Author> {
   researchResults: PerplexityResearchResult[];
   createdAt: string;
   updatedAt: string;
+  likes: number;
   author: TAuthor;
 }
 
@@ -59,3 +60,9 @@ export interface GetBlogComments {
   currentPage: number;
   hasMore: boolean;
 }
+
+export type GetBlogBySlugData = {
+  blog: Blog<Author>;
+  totalComments: number;
+  parentComments: number;
+};
