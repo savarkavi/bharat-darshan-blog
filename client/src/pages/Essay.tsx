@@ -8,7 +8,7 @@ import CommentsContainer from "../components/common/CommentsContainer";
 const Essay = () => {
   const { slug } = useParams();
 
-  const { data: blog, isLoading } = useGetBlog(slug);
+  const { data, isLoading } = useGetBlog(slug);
 
   if (isLoading)
     return (
@@ -17,7 +17,7 @@ const Essay = () => {
       </div>
     );
 
-  if (!blog) {
+  if (!data || !data.blog) {
     return (
       <div className="flex h-full flex-1 flex-col items-center justify-center gap-2 text-2xl">
         <p className="text-xl xl:text-3xl">
@@ -35,24 +35,24 @@ const Essay = () => {
       <div className="bg-lightest-parchment mt-[64px] flex h-[calc(100vh-64px)] w-full items-center">
         <div className="flex w-full flex-[50%] flex-col items-center justify-center gap-6 px-12 text-center">
           <h1 className="text-charcoal-black font-bolton text-7xl">
-            {blog.title}
+            {data.blog.title}
           </h1>
           <p className="text-copper-brown max-w-[600px] text-xl">
-            {blog.excerpt}
+            {data.blog.excerpt}
           </p>
         </div>
         <div className="h-full w-full flex-[50%]">
           <img
-            src={blog?.coverImage}
+            src={data.blog?.coverImage}
             alt="essay cover image"
             className="h-full w-full object-cover"
           />
         </div>
       </div>
-      <div className="flex flex-col gap-16 pb-24">
-        <EssayContent blog={blog} />
-        <EssayStats />
-        <CommentsContainer blog={blog} limit={3} />
+      <div className="mx-auto flex w-full max-w-[800px] flex-col gap-16 pb-24">
+        <EssayContent blog={data.blog} />
+        <EssayStats data={data} />
+        <CommentsContainer blogData={data} limit={3} />
       </div>
     </div>
   );

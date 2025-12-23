@@ -6,7 +6,7 @@ import { ImSpinner2 } from "react-icons/im";
 const EssayComments = () => {
   const { slug } = useParams();
 
-  const { data: blog, isLoading } = useGetBlog(slug);
+  const { data, isLoading } = useGetBlog(slug);
 
   if (isLoading)
     return (
@@ -15,7 +15,7 @@ const EssayComments = () => {
       </div>
     );
 
-  if (!blog) {
+  if (!data || !data.blog) {
     return (
       <div className="flex h-full flex-1 flex-col items-center justify-center gap-2 text-2xl">
         <p className="text-xl xl:text-3xl">
@@ -30,7 +30,7 @@ const EssayComments = () => {
 
   return (
     <div className="mt-[64px] pt-20 pb-16">
-      <CommentsContainer blog={blog} limit={4} />
+      <CommentsContainer blogData={data} limit={4} />
     </div>
   );
 };
