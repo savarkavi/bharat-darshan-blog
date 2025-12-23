@@ -1,49 +1,72 @@
 import CommentForm from "../forms/CommentForm";
 import { useGetBlogComments } from "../../api/comment/commentApi";
 import CommentItem from "./CommentItem";
-import type { Author, Blog } from "../../types/types";
+import type { GetBlogBySlugData } from "../../types/types";
 import Button from "./Button";
+import { Link, useLocation } from "react-router-dom";
 
 interface CommentsContainerProps {
-  blog: Blog<Author>;
+  blogData: GetBlogBySlugData;
   limit: number;
 }
 
-const CommentsContainer = ({ blog, limit }: CommentsContainerProps) => {
+const CommentsContainer = ({ blogData, limit }: CommentsContainerProps) => {
   const {
     data: blogComments,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
   } = useGetBlogComments({
-    blogId: blog._id,
+    blogId: blogData.blog._id,
     limit,
   });
 
+  const { pathname } = useLocation();
+
+  const isCommentsPage = pathname.includes("/comments");
+
   return (
     <div className="mx-auto flex w-full max-w-[800px] flex-col gap-12">
-      <p className="text-saffron text-3xl font-bold">
-        {`Discussions about ${limit > 3 ? blog.title : "this essay"}`}
-        {limit > 3 && (
-          <span className="text-xl text-gray-500">{`By ${blog.author.fullname}`}</span>
+      <div className="text-saffron text-3xl font-bold">
+        <p>{`Discussions about ${isCommentsPage ? blogData.blog.title : "this essay"}`}</p>
+        {isCommentsPage && (
+          <p className="text-xl text-gray-500">{`By ${blogData.blog.author.fullname}`}</p>
         )}
-      </p>
+      </div>
       <div>
-        <CommentForm blogId={blog._id} parentCommentId={null} />
+        <CommentForm blogId={blogData.blog._id} parentCommentId={null} />
       </div>
       <div className="flex flex-col gap-4">
-        {blogComments?.pages.map((page) =>
-          page.comments.map((comment) => {
-            return (
-              <CommentItem
-                key={comment._id}
-                comment={comment}
-                blogId={blog._id}
-              />
-            );
-          }),
-        )}
+        {isCommentsPage
+          ? blogComments?.pages.map((page) =>
+              page.comments.map((comment) => {
+                return (
+                  <CommentItem
+                    key={comment._id}
+                    comment={comment}
+                    blogId={blogData.blog._id}
+                  />
+                );
+              }),
+            )
+          : blogComments?.pages[0].comments
+              .slice(0, 3)
+              .map((comment) => (
+                <CommentItem
+                  key={comment._id}
+                  comment={comment}
+                  blogId={blogData.blog._id}
+                />
+              ))}
       </div>
+      {!isCommentsPage && blogData.parentComments > 3 && (
+        <Link
+          to={`/essays/${blogData.blog.slug}/comments`}
+          className="w-fit text-xl text-gray-600"
+        >
+          See more comments...
+        </Link>
+      )}
       {hasNextPage && limit > 3 && (
         <Button
           isLoading={isFetchingNextPage}
