@@ -1,4 +1,8 @@
-import type { Blog, GetAllBlogsResponse } from "../types/types";
+import type {
+  Blog,
+  GetAllBlogsResponse,
+  GetBlogBySlugData,
+} from "../types/types";
 import api from "./api";
 
 interface SaveDraftParams {
@@ -20,7 +24,7 @@ export const blogService = {
   getBlog: async (slug: string | undefined) => {
     if (!slug) return;
 
-    const res = await api.get<Blog>(`/blogs/${slug}`);
+    const res = await api.get<GetBlogBySlugData>(`/blogs/${slug}`);
     return res.data;
   },
 
