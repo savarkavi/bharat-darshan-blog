@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import Blog from "../models/Blog.ts";
 import { generateSlug } from "../utils/generateSlug.ts";
 import Comment from "../models/Comment.ts";
+import mongoose from "mongoose";
 
 export const getAllBlogs = async (req: Request, res: Response) => {
   try {
@@ -140,6 +141,46 @@ export const deleteBlog = async (req: Request, res: Response) => {
     await blog.deleteOne();
 
     res.status(204).json({ message: "Blog successfully deleted" });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const likeBlog = async (req: Request, res: Response) => {
+  try {
+    const slug = req.params.slug;
+    const userId = req.user._id;
+
+    const blog = await Blog.findOne({ slug });
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+    const isAlreadyLiked = blog.likes.find(
+      (id) => id.toString() === userObjectId.toString()
+    );
+    console.log(isAlreadyLiked);
+
+    if (isAlreadyLiked) {
+      blog.likes = blog.likes.filter(
+        (id) => id.toString() !== userObjectId.toString()
+      );
+    } else {
+      blog.likes.push(userObjectId);
+    }
+
+    console.log(blog.likes);
+
+    await blog.save();
+
+    return res.status(200).json({
+      message: isAlreadyLiked ? "Blog unliked" : "Blog liked",
+    });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });

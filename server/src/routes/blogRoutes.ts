@@ -4,6 +4,7 @@ import {
   deleteBlog,
   getAllBlogs,
   getBlogBySlug,
+  likeBlog,
   saveDraft,
 } from "../controllers/blogController.ts";
 import { protect } from "../middleware/auth.ts";
@@ -26,5 +27,7 @@ router
   .route("/:slug")
   .get(getBlogBySlug)
   .delete(protect, verifiedOnly, deleteBlog);
+
+router.put("/:slug/like", protect, verifiedOnly, likeBlog);
 
 export default router;
