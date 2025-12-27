@@ -4,6 +4,7 @@ import User from "../models/User.ts";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { sendEmail } from "../utils/sendVerificationEmail.ts";
+import { generateFromEmail } from "unique-username-generator";
 
 const generateJWTToken = (userId: string) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET as string, {
@@ -23,16 +24,31 @@ const generateVerificationToken = () => {
 
 export const signUp = async (req: Request, res: Response) => {
   try {
-    const { fullname, username, email, password } = req.body;
+    const { fullname, email, password } = req.body;
+    let username = "";
+    let exists = true;
+    let attempts = 0;
 
-    const existingUser = await User.findOne({
-      $or: [{ email }, { username }],
+    const existingEmail = await User.findOne({
+      email,
     });
 
-    if (existingUser) {
+    if (existingEmail) {
       return res.status(409).json({
-        message: "User with the same email or username already exists",
+        message: "User with the same email already exists",
       });
+    }
+
+    while (exists) {
+      if (attempts > 5) {
+        throw new Error("Unable to generate unique username");
+      }
+
+      username = generateFromEmail(email, {
+        randomDigits: 5,
+        stripLeadingDigits: true,
+      });
+      exists = !!(await User.exists({ username }));
     }
 
     const user = await User.create({ fullname, username, email, password });
