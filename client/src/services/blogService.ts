@@ -39,4 +39,9 @@ export const blogService = {
     const res = await api.post("/blogs");
     return res.data;
   },
+
+  likeBlog: async (slug: string) => {
+    const res = await api.put(`/blogs/${slug}/like`);
+    return res.data;
+  },
 };
