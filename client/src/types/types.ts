@@ -24,7 +24,7 @@ export interface Blog<TAuthor = Author> {
   researchResults: PerplexityResearchResult[];
   createdAt: string;
   updatedAt: string;
-  likes: number;
+  likes: string[];
   author: TAuthor;
 }
 
@@ -35,7 +35,7 @@ export interface GetAllBlogsResponse {
 }
 
 export interface User {
-  _id: string;
+  userId: string;
   fullname: string;
   username: string;
   avatar?: string;
