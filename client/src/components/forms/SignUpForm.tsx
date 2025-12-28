@@ -100,7 +100,7 @@ const SignUpForm = () => {
           </div>
         </div>
         <Button isLoading={isPending} className="flex py-2 text-lg">
-          Sign In
+          Sign up
         </Button>
       </form>
       <div className="bg-copper-brown h-px w-full" />
