@@ -28,6 +28,6 @@ router
   .get(getBlogBySlug)
   .delete(protect, verifiedOnly, deleteBlog);
 
-router.put("/:slug/like", protect, verifiedOnly, likeBlog);
+router.put("/:slug/like", protect, likeBlog);
 
 export default router;
