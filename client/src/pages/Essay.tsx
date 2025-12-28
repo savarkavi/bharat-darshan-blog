@@ -4,13 +4,15 @@ import { ImSpinner2 } from "react-icons/im";
 import EssayContent from "../components/essay/EssayContent";
 import EssayStats from "../components/essay/EssayStats";
 import CommentsContainer from "../components/common/CommentsContainer";
+import { useAuthUser } from "../api/auth/authApi";
 
 const Essay = () => {
   const { slug } = useParams();
 
   const { data, isLoading } = useGetBlog(slug);
+  const { user, isLoading: isUserLoading } = useAuthUser();
 
-  if (isLoading)
+  if (isLoading || isUserLoading)
     return (
       <div className="bg-light-parchment relative flex min-h-screen items-center justify-center">
         <ImSpinner2 className="animate-spin" />
@@ -51,7 +53,7 @@ const Essay = () => {
       </div>
       <div className="mx-auto flex w-full max-w-[800px] flex-col gap-16 pb-24">
         <EssayContent blog={data.blog} />
-        <EssayStats data={data} />
+        <EssayStats data={data} user={user} />
         <CommentsContainer blogData={data} limit={3} />
       </div>
     </div>
