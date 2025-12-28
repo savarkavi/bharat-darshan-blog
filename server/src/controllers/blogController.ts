@@ -154,6 +154,8 @@ export const likeBlog = async (req: Request, res: Response) => {
     const slug = req.params.slug;
     const userId = req.user._id;
 
+    console.log(userId);
+
     const blog = await Blog.findOne({ slug });
 
     if (!blog) {
