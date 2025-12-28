@@ -34,16 +34,16 @@ const Essay = () => {
 
   return (
     <div>
-      <div className="bg-lightest-parchment mt-[64px] flex h-[calc(100vh-64px)] w-full items-center">
-        <div className="flex w-full flex-[50%] flex-col items-center justify-center gap-6 px-12 text-center">
-          <h1 className="text-charcoal-black font-bolton text-7xl">
+      <div className="bg-lightest-parchment mt-[64px] flex h-[calc(100vh-64px)] w-full flex-col-reverse items-center lg:flex-row">
+        <div className="flex w-full flex-[50%] flex-col items-center justify-center gap-6 px-4 text-center lg:px-12">
+          <h1 className="text-charcoal-black font-bolton text-5xl lg:text-7xl">
             {data.blog.title}
           </h1>
-          <p className="text-copper-brown max-w-[600px] text-xl">
+          <p className="text-copper-brown max-w-[600px] text-lg lg:text-xl">
             {data.blog.excerpt}
           </p>
         </div>
-        <div className="h-full w-full flex-[50%]">
+        <div className="h-full max-h-[300px] w-full flex-[50%] lg:max-h-full">
           <img
             src={data.blog?.coverImage}
             alt="essay cover image"

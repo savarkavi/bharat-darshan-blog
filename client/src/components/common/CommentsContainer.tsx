@@ -26,7 +26,7 @@ const CommentsContainer = ({ blogData, limit }: CommentsContainerProps) => {
   const isCommentsPage = pathname.includes("/comments");
 
   return (
-    <div className="mx-auto flex w-full max-w-[800px] flex-col gap-12">
+    <div className="mx-auto flex w-full max-w-[800px] flex-col gap-12 px-6">
       <div className="text-saffron text-3xl font-bold">
         <p>{`Discussions about ${isCommentsPage ? blogData.blog.title : "this essay"}`}</p>
         {isCommentsPage && (

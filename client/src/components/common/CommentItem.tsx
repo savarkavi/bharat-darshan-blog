@@ -24,7 +24,7 @@ const CommentItem = ({ comment, blogId }: CommentItemProps) => {
   );
 
   return (
-    <div key={comment._id} className={cn("flex gap-4 pb-4")}>
+    <div key={comment._id} className={cn("flex gap-2 pb-4 md:gap-4")}>
       <div className="flex flex-col items-center gap-1">
         <Avatar
           name={comment.author.fullname}
@@ -41,14 +41,14 @@ const CommentItem = ({ comment, blogId }: CommentItemProps) => {
       <div className="flex w-full flex-col justify-between">
         <div className="flex w-full flex-col gap-2">
           <div className="flex items-center gap-3">
-            <p className="text-saffron text-lg font-semibold capitalize">
+            <p className="text-saffron font-semibold capitalize md:text-lg">
               {comment.author.fullname}
             </p>
             <p className="text-gray-600">
               {format(comment.createdAt, "LLL d")}
             </p>
           </div>
-          <p className="text-xl">{comment.content}</p>
+          <p className="text-lg md:text-xl">{comment.content}</p>
           <div className="mt-2 flex items-center gap-6 text-gray-600">
             <div className="flex cursor-pointer items-center gap-1 select-none">
               <CiHeart className="size-5" />

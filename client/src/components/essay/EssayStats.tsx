@@ -14,8 +14,6 @@ const EssayStats = ({ data, user }: EssayStatsProps) => {
   const navigate = useNavigate();
   const { mutate } = useLikeBlog({ slug: data.blog.slug });
 
-  console.log(user?.userId);
-
   const isLiked = data.blog.likes.find((id) => id === user?.userId);
 
   const handleLike = () => {
@@ -28,7 +26,7 @@ const EssayStats = ({ data, user }: EssayStatsProps) => {
   };
 
   return (
-    <div className="border-ash-grey mx-auto flex w-full max-w-[800px] items-center justify-between border-y py-4">
+    <div className="border-ash-grey mx-auto flex w-full max-w-[800px] items-center justify-between border-y px-6 py-4">
       <div className="flex items-center gap-6">
         <div
           onClick={handleLike}

@@ -95,6 +95,14 @@ export const useCreateComment = (blogId: string) => {
             );
           });
 
+        await queryClient.invalidateQueries({
+          queryKey: ["replies", newComment.parent],
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: ["comments", blogId],
+        });
+
         return;
       }
 
