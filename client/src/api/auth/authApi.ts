@@ -11,6 +11,7 @@ export const useAuthUser = () => {
     queryFn: authService.fetchAuthUser,
     retry: false,
     staleTime: Infinity,
+    gcTime: Infinity,
   });
 
   const user = query.data;
@@ -61,6 +62,10 @@ export const useSignUp = () => {
     mutationFn: authService.signUp,
     onSuccess: (data) => {
       queryClient.setQueryData(["auth", "user"], data);
+    },
+    onError: (error: AxiosError<ApiError>) => {
+      console.log(error.response?.data.message);
+      toast.error(error.response?.data.message);
     },
   });
 };
