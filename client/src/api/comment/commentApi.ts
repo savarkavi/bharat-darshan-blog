@@ -42,8 +42,13 @@ export const useCreateComment = (blogId: string) => {
 
   return useMutation({
     mutationFn: commentService.createComment,
-    onSuccess: (newComment: Comment) => {
+    onSuccess: async (newComment: Comment) => {
       toast.success("Comment posted");
+
+      await queryClient.cancelQueries({ queryKey: ["comments", blogId] });
+      await queryClient.cancelQueries({
+        queryKey: ["replies", newComment.parent],
+      });
 
       if (newComment.parent) {
         queryClient.setQueryData(
