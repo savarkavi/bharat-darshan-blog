@@ -53,15 +53,18 @@ const Header = () => {
                 round
                 size="40px"
                 textMarginRatio={0.15}
-                className="cursor-pointer hover:brightness-105"
+                className="cursor-pointer select-none hover:brightness-105"
               />
             </DropdownMenu.Trigger>
             <DropdownMenu.Content position="Right" classNames="p-1 text-black">
               <div className="min-w-36 text-nowrap">
-                <div className="hover:bg-light-parchment flex items-center gap-3 rounded-md p-2">
+                <Link
+                  to={"/profile"}
+                  className="hover:bg-light-parchment flex items-center gap-3 rounded-md p-2"
+                >
                   <FaUser />
                   <p>Profile</p>
-                </div>
+                </Link>
                 <div
                   className="hover:bg-light-parchment flex cursor-pointer items-center gap-3 rounded-md p-2"
                   onClick={() => signOut()}
