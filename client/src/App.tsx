@@ -12,6 +12,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Essay from "./pages/Essay";
 import ScrollToTop from "./components/ScrollToTop";
 import EssayComments from "./pages/EssayComments";
+import { ProfileLayout } from "./layouts/ProfileLayout";
+import Profile from "./pages/Profile";
+import ProfileBookmarks from "./pages/ProfileBookmarks";
+import ProfileLikes from "./pages/ProfileLikes";
 
 function App() {
   const { isLoading } = useAuthUser();
@@ -32,10 +36,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/essays/:slug">
-            <Route index element={<Essay />} />
-            <Route path="comments" element={<EssayComments />} />
-          </Route>
+          <Route path="/essays/:slug" element={<Essay />} />
         </Route>
         <Route
           element={
@@ -46,6 +47,16 @@ function App() {
         >
           <Route path="/editor" element={<EditorLayout />}>
             <Route path=":slug" element={<EssayEditor />} />
+          </Route>
+          <Route element={<MainLayout />}>
+            <Route path="/essays/:slug/comments" element={<EssayComments />} />
+          </Route>
+        </Route>
+        <Route element={<ProfileLayout />}>
+          <Route path="/profile">
+            <Route index element={<Profile />} />
+            <Route path="bookmarks" element={<ProfileBookmarks />} />
+            <Route path="likes" element={<ProfileLikes />} />
           </Route>
         </Route>
       </Routes>
