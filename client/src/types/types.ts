@@ -28,7 +28,7 @@ export interface Blog<TAuthor = Author> {
   author: TAuthor;
 }
 
-export interface GetAllBlogsResponse {
+export interface GetBlogsResponse {
   blogs: Blog[];
   currentPage: number;
   hasMore: boolean;
