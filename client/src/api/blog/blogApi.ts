@@ -30,6 +30,17 @@ export const useGetAllBlogs = () => {
   });
 };
 
+export const useGetMyBlogs = (userId: string) => {
+  return useInfiniteQuery({
+    queryKey: ["my-blogs", userId],
+    queryFn: ({ pageParam }) => blogService.getMyBlogs(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.currentPage + 1 : undefined,
+    staleTime: Infinity,
+  });
+};
+
 export const useCreateBlog = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();

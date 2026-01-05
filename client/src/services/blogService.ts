@@ -1,8 +1,4 @@
-import type {
-  Blog,
-  GetAllBlogsResponse,
-  GetBlogBySlugData,
-} from "../types/types";
+import type { Blog, GetBlogsResponse, GetBlogBySlugData } from "../types/types";
 import api from "./api";
 
 interface SaveDraftParams {
@@ -29,7 +25,7 @@ export const blogService = {
   },
 
   getAllBlogs: async (pageParams: number) => {
-    const res = await api.get<GetAllBlogsResponse>(
+    const res = await api.get<GetBlogsResponse>(
       `/blogs?page=${pageParams}&limit=9`,
     );
     return res.data;
@@ -42,6 +38,13 @@ export const blogService = {
 
   likeBlog: async (slug: string) => {
     const res = await api.put(`/blogs/${slug}/like`);
+    return res.data;
+  },
+
+  getMyBlogs: async (pageParams: number) => {
+    const res = await api.get<GetBlogsResponse>(
+      `/blogs/my-blogs/?page=${pageParams}&limit=10`,
+    );
     return res.data;
   },
 };
