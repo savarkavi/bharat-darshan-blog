@@ -4,6 +4,7 @@ import {
   deleteBlog,
   getAllBlogs,
   getBlogBySlug,
+  getUserBlogs,
   likeBlog,
   saveDraft,
 } from "../controllers/blogController.ts";
@@ -14,6 +15,8 @@ import { upload } from "../middleware/upload.ts";
 const router = express.Router();
 
 router.route("/").get(getAllBlogs).post(protect, verifiedOnly, createBlog);
+
+router.get("/my-blogs", protect, getUserBlogs);
 
 router.put(
   "/draft/:slug",

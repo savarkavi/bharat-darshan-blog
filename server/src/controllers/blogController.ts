@@ -3,6 +3,7 @@ import Blog from "../models/Blog.ts";
 import { generateSlug } from "../utils/generateSlug.ts";
 import Comment from "../models/Comment.ts";
 import mongoose from "mongoose";
+import User from "../models/User.ts";
 
 export const getAllBlogs = async (req: Request, res: Response) => {
   try {
@@ -154,8 +155,6 @@ export const likeBlog = async (req: Request, res: Response) => {
     const slug = req.params.slug;
     const userId = req.user._id;
 
-    console.log(userId);
-
     const blog = await Blog.findOne({ slug });
 
     if (!blog) {
@@ -166,7 +165,6 @@ export const likeBlog = async (req: Request, res: Response) => {
     const isAlreadyLiked = blog.likes.find(
       (id) => id.toString() === userObjectId.toString()
     );
-    console.log(isAlreadyLiked);
 
     if (isAlreadyLiked) {
       blog.likes = blog.likes.filter(
@@ -176,12 +174,39 @@ export const likeBlog = async (req: Request, res: Response) => {
       blog.likes.push(userObjectId);
     }
 
-    console.log(blog.likes);
-
     await blog.save();
 
     return res.status(200).json({
       message: isAlreadyLiked ? "Blog unliked" : "Blog liked",
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const getUserBlogs = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user._id;
+
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    const blogs = await Blog.find({ author: userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalBlogs = await Blog.countDocuments({ author: userId });
+    const hasMore = skip + blogs.length < totalBlogs;
+
+    res.json({
+      blogs,
+      hasMore,
+      currentPage: page,
     });
   } catch (error) {
     if (error instanceof Error) {
