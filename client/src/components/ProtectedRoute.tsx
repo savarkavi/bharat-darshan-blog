@@ -1,9 +1,8 @@
-import type React from "react";
 import { useAuthUser } from "../api/auth/authApi";
 import { ImSpinner2 } from "react-icons/im";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuthUser();
   const location = useLocation();
 
@@ -19,7 +18,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/sign-in" state={{ from: location }} replace />;
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
