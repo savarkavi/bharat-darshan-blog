@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import { ToastContainer } from "react-toastify";
@@ -32,31 +32,27 @@ function App() {
     <div>
       <ScrollToTop />
       <Routes>
+        // --public routes--
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/essays/:slug" element={<Essay />} />
         </Route>
-        <Route
-          element={
-            <ProtectedRoute>
-              <Outlet />
-            </ProtectedRoute>
-          }
-        >
+        // --protected-routes--
+        <Route element={<ProtectedRoute />}>
           <Route path="/editor" element={<EditorLayout />}>
             <Route path=":slug" element={<EssayEditor />} />
           </Route>
           <Route element={<MainLayout />}>
             <Route path="/essays/:slug/comments" element={<EssayComments />} />
           </Route>
-        </Route>
-        <Route element={<ProfileLayout />}>
-          <Route path="/profile">
-            <Route index element={<Profile />} />
-            <Route path="bookmarks" element={<ProfileBookmarks />} />
-            <Route path="likes" element={<ProfileLikes />} />
+          <Route element={<ProfileLayout />}>
+            <Route path="/profile">
+              <Route index element={<Profile />} />
+              <Route path="bookmarks" element={<ProfileBookmarks />} />
+              <Route path="likes" element={<ProfileLikes />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
