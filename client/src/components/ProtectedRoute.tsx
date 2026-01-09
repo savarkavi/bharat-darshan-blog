@@ -1,9 +1,10 @@
 import { useAuthUser } from "../api/auth/authApi";
 import { ImSpinner2 } from "react-icons/im";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { AuthProvider } from "../context/AuthContext";
 
 const ProtectedRoute = () => {
-  const { isAuthenticated, isLoading } = useAuthUser();
+  const { user, isLoading } = useAuthUser();
   const location = useLocation();
 
   if (isLoading) {
@@ -14,11 +15,15 @@ const ProtectedRoute = () => {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!user) {
     return <Navigate to="/sign-in" state={{ from: location }} replace />;
   }
 
-  return <Outlet />;
+  return (
+    <AuthProvider user={user}>
+      <Outlet />
+    </AuthProvider>
+  );
 };
 
 export default ProtectedRoute;
