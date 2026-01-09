@@ -3,9 +3,9 @@ import SignInForm from "../components/forms/SignInForm";
 import { useAuthUser } from "../api/auth/authApi";
 
 const SignIn = () => {
-  const { isAuthenticated } = useAuthUser();
+  const { user } = useAuthUser();
 
-  if (isAuthenticated) return <Navigate to="/" replace />;
+  if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="bg-light-parchment flex min-h-screen items-center justify-center">

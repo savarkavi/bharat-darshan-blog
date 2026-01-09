@@ -15,9 +15,8 @@ export const useAuthUser = () => {
   });
 
   const user = query.data;
-  const isAuthenticated = !!user;
 
-  return { user, isAuthenticated, isLoading: query.isLoading };
+  return { user, isLoading: query.isLoading };
 };
 
 export const useSignIn = () => {

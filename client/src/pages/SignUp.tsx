@@ -3,9 +3,9 @@ import { useAuthUser } from "../api/auth/authApi";
 import SignUpForm from "../components/forms/SignUpForm";
 
 const SignUp = () => {
-  const { isAuthenticated } = useAuthUser();
+  const { user } = useAuthUser();
 
-  if (isAuthenticated) return <Navigate to="/" replace />;
+  if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="bg-light-parchment flex min-h-screen items-center justify-center border border-black">

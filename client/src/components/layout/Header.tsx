@@ -11,7 +11,7 @@ import NewEssayButton from "../NewEssayButton";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
-  const { isAuthenticated, user } = useAuthUser();
+  const { user } = useAuthUser();
   const { mutate: signOut } = useSignOut();
 
   const { pathname } = useLocation();
@@ -43,7 +43,7 @@ const Header = () => {
         <a href="/">Culture</a>
         <a href="/">History</a>
       </div>
-      {isAuthenticated ? (
+      {user ? (
         <div className="flex items-center gap-4">
           <DropdownMenu>
             <DropdownMenu.Trigger>
