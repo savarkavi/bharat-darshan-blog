@@ -1,10 +1,9 @@
-import { ImSpinner2 } from "react-icons/im";
-import { useAuthUser } from "../../api/auth/authApi";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Avatar from "react-avatar";
 import Button from "../common/Button";
 import { GoKebabHorizontal } from "react-icons/go";
 import { cn } from "../../lib/utils";
+import { useUser } from "../../hooks/useUser";
 
 export const ProfileHeader = () => {
   const profileTabs = [
@@ -13,7 +12,7 @@ export const ProfileHeader = () => {
     { id: "likes", label: "Likes", href: "/profile/likes" },
   ];
 
-  const { user, isLoading } = useAuthUser();
+  const user = useUser();
   const location = useLocation();
 
   const getActiveTab = () => {
@@ -23,18 +22,6 @@ export const ProfileHeader = () => {
   };
 
   const activeTab = getActiveTab();
-
-  if (!user) {
-    return <Navigate to="/sign-in" state={{ from: location }} replace />;
-  }
-
-  if (isLoading) {
-    return (
-      <div className="mt-[150px] flex items-center justify-center">
-        <ImSpinner2 className="animate-spin" />
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto mt-[150px] flex max-w-[600px] flex-col gap-8">

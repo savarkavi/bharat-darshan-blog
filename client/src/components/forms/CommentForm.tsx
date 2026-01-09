@@ -3,7 +3,7 @@ import FormValidationError from "../common/FormValidationError";
 import Button from "../common/Button";
 import { useCreateComment } from "../../api/comment/commentApi";
 import Avatar from "react-avatar";
-import { useAuthUser } from "../../api/auth/authApi";
+import { useUser } from "../../hooks/useUser";
 
 interface IFormInput {
   content: string;
@@ -22,7 +22,7 @@ const CommentForm = ({ blogId, parentCommentId }: CommentFormProps) => {
     reset,
   } = useForm<IFormInput>();
 
-  const { user } = useAuthUser();
+  const user = useUser();
 
   const { mutate: postComment, isPending } = useCreateComment(blogId);
 
